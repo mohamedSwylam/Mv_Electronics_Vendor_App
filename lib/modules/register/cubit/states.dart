@@ -14,6 +14,8 @@ class OnChangeGstNumberState extends RegisterStates {}
 
 class OnChangePinCodeState extends RegisterStates {}
 
+class OnChangeLandMark extends RegisterStates {}
+
 class OnChangeAddressState extends RegisterStates {}
 
 class OnChangeCountryState extends RegisterStates {}
@@ -29,6 +31,7 @@ class PickShopImageErrorState extends RegisterStates {
 
   PickShopImageErrorState(this.error);
 }
+
 class PickLogoShopImageSuccessState extends RegisterStates {}
 
 class PickLogoShopImageErrorState extends RegisterStates {

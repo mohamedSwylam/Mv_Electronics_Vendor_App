@@ -72,7 +72,13 @@ class RegisterCubit extends Cubit<RegisterStates> {
     country = value;
     emit(OnChangeCountryState());
   }
+  TextEditingController? landMarkController;
+  String? landMark;
 
+  onChangeLandMark(value) {
+    landMark = value;
+    emit(OnChangeLandMark());
+  }
   TextEditingController? stateController;
   String? statee;
 

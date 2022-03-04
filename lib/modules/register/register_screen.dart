@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:csc_picker/csc_picker.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -253,36 +254,95 @@ class RegisterScreenn extends StatelessWidget {
                           },
                         ),
                         CustomTextFormField(
-                          controller: cubit.cityController,
-                          labelText: "City",
-                          inputType: TextInputType.text,
-                          onChanged: (value) => cubit.onChangeCity(value),
+                          controller: cubit.landMarkController,
+                          labelText: "landMark",
+                          inputType: TextInputType.number,
+                          onChanged: (value) => cubit.onChangeLandMark(value),
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return 'Enter City';
+                              return 'Enter landMark';
                             }
                           },
                         ),
-                        CustomTextFormField(
-                          controller: cubit.stateController,
-                          labelText: "State",
-                          inputType: TextInputType.text,
-                          onChanged: (value) => cubit.onChangeState(value),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Enter State';
-                            }
+                        SizedBox (height: 10,),
+                        CSCPicker(
+                          ///Enable disable state dropdown [OPTIONAL PARAMETER]
+                          showStates: true,
+
+                          /// Enable disable city drop down [OPTIONAL PARAMETER]
+                          showCities: true,
+
+                          ///Enable (get flag with country name) / Disable (Disable flag) / ShowInDropdownOnly (display flag in dropdown only) [OPTIONAL PARAMETER]
+                          flagState: CountryFlag.DISABLE,
+
+                          ///Dropdown box decoration to style your dropdown selector [OPTIONAL PARAMETER] (USE with disabledDropdownDecoration)
+                          dropdownDecoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                              color: Colors.white,
+                              border:
+                              Border.all(color: Colors.grey.shade300, width: 1)),
+
+                          ///Disabled Dropdown box decoration to style your dropdown selector [OPTIONAL PARAMETER]  (USE with disabled dropdownDecoration)
+                          disabledDropdownDecoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                             // color: Colors.grey.shade300,
+                              border:
+                              Border.all(color: Colors.grey.shade300, width: 1)),
+
+                          ///placeholders for dropdown search field
+                          countrySearchPlaceholder: "Country",
+                          stateSearchPlaceholder: "State",
+                          citySearchPlaceholder: "City",
+
+                          ///labels for dropdown
+                          countryDropdownLabel: "*Country",
+                          stateDropdownLabel: "*State",
+                          cityDropdownLabel: "*City",
+
+                          ///Default Country
+                          defaultCountry: DefaultCountry.Egypt,
+
+                          ///Disable country dropdown (Note: use it with default country)
+                          //disableCountry: true,
+
+                          ///selected item style [OPTIONAL PARAMETER]
+                          selectedItemStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                          ),
+
+                          ///DropdownDialog Heading style [OPTIONAL PARAMETER]
+                          dropdownHeadingStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold),
+
+                          ///DropdownDialog Item style [OPTIONAL PARAMETER]
+                          dropdownItemStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 14,
+                          ),
+
+                          ///Dialog box radius [OPTIONAL PARAMETER]
+                          dropdownDialogRadius: 10.0,
+
+                          ///Search bar radius [OPTIONAL PARAMETER]
+                          searchBarRadius: 10.0,
+
+                          ///triggers once country selected in dropdown
+                          onCountryChanged: (value) {
+                           cubit.onChangeCountry(value);
                           },
-                        ),
-                        CustomTextFormField(
-                          controller: cubit.countryController,
-                          labelText: "Country",
-                          inputType: TextInputType.text,
-                          onChanged: (value) => cubit.onChangeCountry(value),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Enter Country';
-                            }
+
+                          ///triggers once state selected in dropdown
+                          onStateChanged: (value) {
+                            cubit.onChangeState(value);
+
+                          },
+
+                          ///triggers once city selected in dropdown
+                          onCityChanged: (value) {
+                            cubit.onChangeCity(value);
                           },
                         ),
                       ],
