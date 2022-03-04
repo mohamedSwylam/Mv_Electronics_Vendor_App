@@ -127,6 +127,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.1"
+  csc_picker:
+    dependency: "direct main"
+    description:
+      name: csc_picker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.6"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -156,7 +163,7 @@ packages:
     source: hosted
     version: "2.1.0"
   email_validator:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: email_validator
       url: "https://pub.dartlang.org"
@@ -496,7 +503,7 @@ packages:
       name: image_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.7.5+4"
+    version: "0.8.4+10"
   image_picker_for_web:
     dependency: transitive
     description:

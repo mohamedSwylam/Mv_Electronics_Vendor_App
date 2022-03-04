@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
                 'SplashScreen': (context) => SplashScreen(),
                 'AppLayout': (context) => AppLayout(),
                 'LoginScreen': (context) => LoginScreen(),
-                'RegisterScreen': (context) => RegisterScreen(),
+                'RegisterScreenn': (context) => RegisterScreenn(),
               },
               initialRoute: 'SplashScreen',
             );
