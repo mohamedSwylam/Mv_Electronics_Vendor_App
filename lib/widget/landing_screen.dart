@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../modules/Login/login_screen.dart';
+
 class LandingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,12 @@ class LandingScreen extends StatelessWidget {
                 ), // ButtonStyle
                 child: Text('Sign Out'),
                 onPressed: () {
-                  FirebaseAuth.instance.signOut();
+                  FirebaseAuth.instance.signOut().then((value) {
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => LoginScreen()),
+                    );
+                  });
                 })
           ],
         ),
