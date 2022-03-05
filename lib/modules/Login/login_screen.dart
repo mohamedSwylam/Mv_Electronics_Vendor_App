@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterfire_ui/auth.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mv_vendor_app/modules/register/register_screen.dart';
+import 'package:mv_vendor_app/widget/landing_screen.dart';
 import '../../shared/styles/color.dart';
 import 'cubit/cubit.dart';
 import 'cubit/states.dart';
@@ -61,7 +62,7 @@ class LoginScreen extends StatelessWidget {
               }
 
               // Render your application if authenticated
-              return  RegisterScreenn();
+              return  LandingScreen();
             },
           );
         }

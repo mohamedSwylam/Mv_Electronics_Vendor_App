@@ -179,7 +179,7 @@ class RegisterCubit extends Cubit<RegisterStates> {
         }).then((value) {
           service.addVendor(data: {
             'shopImage': shopImageUrl,
-            'Logo': shopLogoUrl,
+            'logo': shopLogoUrl,
             'businessName': businessName,
             'mobile': '+2${contactNumber}',
             'email': emailAddress,
