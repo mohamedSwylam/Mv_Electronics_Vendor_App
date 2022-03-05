@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:mv_vendor_app/modules/register/cubit/states.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mv_vendor_app/widget/landing_screen.dart';
 
 import '../../../services/firebase_service.dart';
 
@@ -144,28 +145,32 @@ class RegisterCubit extends Cubit<RegisterStates> {
     );
   }
 
-  saveToDb(context){
-    if(shopImage==null){
-      scaffold('Shop Image not selected',context);
+  saveToDb(context) {
+    if (shopImage == null) {
+      scaffold('Shop Image not selected', context);
       return;
     }
-    if(logoShopImage==null){
-      scaffold('Shop Logo not selected',context);
+    if (logoShopImage == null) {
+      scaffold('Shop Logo not selected', context);
       return;
     }
     if (formKey.currentState!.validate()) {
-      if( country==null||city==null||statee==null){
-        scaffold('Selected address field completely',context);
+      if (country == null || city == null || statee == null) {
+        scaffold('Selected address field completely', context);
         return;
       }
       EasyLoading.show(status: 'Please wait..');
-      service.uploadImage(shopImage, 'vendors').then((String? url) {
+      service
+          .uploadImage(shopImage, 'vendors/${service.user!.uid}/shopImage.jpg')
+          .then((String? url) {
         if (url != null) {
           shopImageUrl = url;
           emit(SaveToDbSuccessState());
         }
       }).then((value) {
-        service.uploadImage(logoShopImage, 'vendors').then((String? url) {
+        service
+            .uploadImage(logoShopImage, 'vendors/${service.user!.uid}/logo.jpg')
+            .then((String? url) {
           if (url != null) {
             shopLogoUrl = url;
             emit(SaveToDbSuccessState());
@@ -179,21 +184,27 @@ class RegisterCubit extends Cubit<RegisterStates> {
             'mobile': '+2${contactNumber}',
             'email': emailAddress,
             'taxRegistered': taxStatus,
-            'tinNumber': gstNumber==null
-                ? null
-                : gstNumber,
+            'tinNumber': gstNumber == null ? null : gstNumber,
             'pinCode': pinCode,
             'LandMark': landMark,
-            'country':country,
-            'state':statee,
-            'city':city,
+            'country': country,
+            'state': statee,
+            'approved': false,
+            'city': city,
             'uid': service.user!.uid,
-            'time' :DateTime.now(),
+            'time': DateTime.now(),
           });
           emit(SaveToDbSuccessState());
+        }).then((value) {
+          EasyLoading.dismiss();
+          return Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (BuildContext context) => LandingScreen(),
+            ),
+          );
+        }).catchError((error) {
+          emit(SaveToDbErrorState(error.toString()));
         });
-      }).catchError((error){
-        emit(SaveToDbErrorState(error.toString()));
       });
     }
   }

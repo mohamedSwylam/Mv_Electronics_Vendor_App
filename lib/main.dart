@@ -7,6 +7,7 @@ import 'package:mv_vendor_app/modules/Login/login_screen.dart';
 import 'package:mv_vendor_app/modules/register/register_screen.dart';
 import 'package:mv_vendor_app/shared/bloc_observer.dart';
 import 'package:mv_vendor_app/shared/network/local/cache_helper.dart';
+import 'package:mv_vendor_app/widget/landing_screen.dart';
 import 'layout/app_layout.dart';
 import 'layout/cubit/cubit.dart';
 import 'layout/cubit/states.dart';
@@ -55,6 +56,7 @@ class MyApp extends StatelessWidget {
                 'AppLayout': (context) => AppLayout(),
                 'LoginScreen': (context) => LoginScreen(),
                 'RegisterScreenn': (context) => RegisterScreenn(),
+                'LandingScreen': (context) => LandingScreen(),
               },
               initialRoute: 'SplashScreen',
             );
