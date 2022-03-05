@@ -2,6 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:mv_vendor_app/modules/Login/login_screen.dart';
 import 'package:mv_vendor_app/modules/register/register_screen.dart';
 import 'package:mv_vendor_app/shared/bloc_observer.dart';
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
             return MaterialApp(
               title: 'Vendor App',
               debugShowCheckedModeBanner: false,
+              builder: EasyLoading.init(),
               theme: ThemeData(
                 fontFamily: 'Lato',
               ),

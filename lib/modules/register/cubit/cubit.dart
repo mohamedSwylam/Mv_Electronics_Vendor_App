@@ -1,13 +1,17 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:mv_vendor_app/modules/register/cubit/states.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../../../services/firebase_service.dart';
 
 class RegisterCubit extends Cubit<RegisterStates> {
   RegisterCubit() : super(RegisterInitialState());
 
   static RegisterCubit get(context) => BlocProvider.of(context);
+  FirebaseService service = FirebaseService();
   final formKey = GlobalKey<FormState>();
   TextEditingController? businessNameController;
   String? businessName;
@@ -26,10 +30,10 @@ class RegisterCubit extends Cubit<RegisterStates> {
   }
 
   TextEditingController? emailController;
-  String? emailNumber;
+  String? emailAddress;
 
   onChangeEmail(value) {
-    emailNumber = value;
+    emailAddress = value;
     emit(OnChangeEmailState());
   }
 
@@ -61,7 +65,7 @@ class RegisterCubit extends Cubit<RegisterStates> {
   String? city;
 
   onChangeCity(value) {
-    address = value;
+    city = value;
     emit(OnChangeCityState());
   }
 
@@ -72,6 +76,7 @@ class RegisterCubit extends Cubit<RegisterStates> {
     country = value;
     emit(OnChangeCountryState());
   }
+
   TextEditingController? landMarkController;
   String? landMark;
 
@@ -79,6 +84,7 @@ class RegisterCubit extends Cubit<RegisterStates> {
     landMark = value;
     emit(OnChangeLandMark());
   }
+
   TextEditingController? stateController;
   String? statee;
 
@@ -121,7 +127,74 @@ class RegisterCubit extends Cubit<RegisterStates> {
     });
   }
 
+  String? shopImageUrl;
+  String? shopLogoUrl;
+
   scaffold(message, context) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: message,));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        action: SnackBarAction(
+          label: 'Ok',
+          onPressed: () {
+            ScaffoldMessenger.of(context).clearSnackBars();
+          },
+        ),
+      ),
+    );
+  }
+
+  saveToDb(context){
+    if(shopImage==null){
+      scaffold('Shop Image not selected',context);
+      return;
+    }
+    if(logoShopImage==null){
+      scaffold('Shop Logo not selected',context);
+      return;
+    }
+    if (formKey.currentState!.validate()) {
+      if( country==null||city==null||statee==null){
+        scaffold('Selected address field completely',context);
+        return;
+      }
+      EasyLoading.show(status: 'Please wait..');
+      service.uploadImage(shopImage, 'vendors').then((String? url) {
+        if (url != null) {
+          shopImageUrl = url;
+          emit(SaveToDbSuccessState());
+        }
+      }).then((value) {
+        service.uploadImage(logoShopImage, 'vendors').then((String? url) {
+          if (url != null) {
+            shopLogoUrl = url;
+            emit(SaveToDbSuccessState());
+          }
+          emit(SaveToDbSuccessState());
+        }).then((value) {
+          service.addVendor(data: {
+            'shopImage': shopImageUrl,
+            'Logo': shopLogoUrl,
+            'businessName': businessName,
+            'mobile': '+2${contactNumber}',
+            'email': emailAddress,
+            'taxRegistered': taxStatus,
+            'tinNumber': gstNumber==null
+                ? null
+                : gstNumber,
+            'pinCode': pinCode,
+            'LandMark': landMark,
+            'country':country,
+            'state':statee,
+            'city':city,
+            'uid': service.user!.uid,
+            'time' :DateTime.now(),
+          });
+          emit(SaveToDbSuccessState());
+        });
+      }).catchError((error){
+        emit(SaveToDbErrorState(error.toString()));
+      });
+    }
   }
 }

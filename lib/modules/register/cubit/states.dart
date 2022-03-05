@@ -39,3 +39,10 @@ class PickLogoShopImageErrorState extends RegisterStates {
 
   PickLogoShopImageErrorState(this.error);
 }
+class SaveToDbSuccessState extends RegisterStates {}
+
+class SaveToDbErrorState extends RegisterStates {
+  final String error;
+
+  SaveToDbErrorState(this.error);
+}

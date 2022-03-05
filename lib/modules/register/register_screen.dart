@@ -23,31 +23,6 @@ class RegisterScreenn extends StatelessWidget {
           key: cubit.formKey,
           child: Scaffold(
             backgroundColor: Colors.white,
-            persistentFooterButtons: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ElevatedButton(
-                        child: Text('Register'),
-                        onPressed: () {
-                          if( cubit.shopImage==null){
-                            cubit.scaffold( 'Shop Image not selected',context);
-                            return;
-                          }
-                          if( cubit.logoShopImage==null){
-                            cubit.scaffold( 'Shop Logo not selected',context);
-                            return;
-                          }
-                          if (cubit.formKey.currentState!.validate()) {}
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
             body: SingleChildScrollView(
               child: Column(
                 children: [
@@ -243,17 +218,6 @@ class RegisterScreenn extends StatelessWidget {
                           },
                         ),
                         CustomTextFormField(
-                          controller: cubit.addressController,
-                          labelText: "Address",
-                          inputType: TextInputType.text,
-                          onChanged: (value) => cubit.onChangeAddress(value),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Enter address';
-                            }
-                          },
-                        ),
-                        CustomTextFormField(
                           controller: cubit.landMarkController,
                           labelText: "landMark",
                           inputType: TextInputType.number,
@@ -351,6 +315,23 @@ class RegisterScreenn extends StatelessWidget {
                 ],
               ),
             ),
+            persistentFooterButtons: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                        child: Text('Register'),
+                        onPressed: () {
+                          cubit.saveToDb(context);
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
         );
       },
