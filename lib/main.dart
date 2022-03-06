@@ -50,6 +50,7 @@ class MyApp extends StatelessWidget {
               builder: EasyLoading.init(),
               theme: ThemeData(
                 fontFamily: 'Lato',
+                primaryColor: Colors.indigo,
               ),
               routes: {
                 'SplashScreen': (context) => SplashScreen(),
