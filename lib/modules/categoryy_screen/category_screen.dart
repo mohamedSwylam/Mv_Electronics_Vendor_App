@@ -21,29 +21,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
         var cubit = AppCubit.get(context);
         String title = 'Categories';
         return Scaffold(
-          appBar: AppBar(
-            title: Text(
-              cubit.selectedCategory ?? title,
-              style: TextStyle(color: Colors.black, fontSize: 16),
-            ),
-            elevation: 0.0,
-            backgroundColor: Colors.white,
-            iconTheme: IconThemeData(color: Colors.black54),
-            actions: [
-              IconButton(
-                icon: Icon(IconlyLight.search),
-                onPressed: () {},
-              ),
-              IconButton(
-                icon: Icon(IconlyLight.buy),
-                onPressed: () {},
-              ),
-              IconButton(
-                icon: const Icon(Icons.more_vert),
-                onPressed: () {},
-              ),
-            ],
-          ),
           body: Row(
             children: [
             ],

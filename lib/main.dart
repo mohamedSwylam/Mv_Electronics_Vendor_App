@@ -14,6 +14,9 @@ import 'layout/cubit/states.dart';
 import 'package:sizer/sizer.dart';
 
 import 'modules/Login/cubit/cubit.dart';
+import 'modules/add_products_screen/add_products_screen.dart';
+import 'modules/home_screen/home_screen.dart';
+import 'modules/products_screen/products_screen.dart';
 import 'modules/register/cubit/cubit.dart';
 import 'modules/splash_screen.dart';
 
@@ -55,11 +58,14 @@ class MyApp extends StatelessWidget {
               routes: {
                 'SplashScreen': (context) => SplashScreen(),
                 'AppLayout': (context) => AppLayout(),
+                'ProductsScreen': (context) => ProductsScreen(),
+                'AddProductsScreen': (context) => AddProductsScreen(),
+                'HomeScreen': (context) => HomeScreen(),
                 'LoginScreen': (context) => LoginScreen(),
                 'RegisterScreenn': (context) => RegisterScreenn(),
                 'LandingScreen': (context) => LandingScreen(),
               },
-              initialRoute: 'SplashScreen',
+              initialRoute: 'AppLayout',
             );
           });
         },

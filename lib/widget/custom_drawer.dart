@@ -13,22 +13,29 @@ class CustomDrawer extends StatelessWidget {
           child: Row(
             children: [
               DrawerHeader(
-                child: Text('Drawer Header',style: TextStyle(color: Colors.white)),
+                child: Text('Drawer Header',
+                    style: TextStyle(color: Colors.white)),
               ),
             ],
           ),
         ),
         Expanded(
-          child: ListView(
-              padding: EdgeInsets.zero,
+          child: ListView(padding: EdgeInsets.zero, children: [
+            DrawerMenu(
+              icon: Icons.home_outlined,
+              menuTitle: 'Home',
+              route: 'HomeScreen',
+            ),
+            ExpansionTile(
+              leading: Icon(Icons.weekend_outlined),
+              title: Text('Products'),
               children: [
-                DrawerMenu(icon: Icons.home_outlined,menuTitle: 'Home',route: 'HomeScreen', ),
-                DrawerMenu(icon: Icons.home_outlined,menuTitle: 'Home',route: 'HomeScreen', ),
-                DrawerMenu(icon: Icons.home_outlined,menuTitle: 'Home',route: 'HomeScreen', ),
-                DrawerMenu(icon: Icons.home_outlined,menuTitle: 'Home',route: 'HomeScreen', ),
-            ],
-          ),
-        ),
+                DrawerMenu(menuTitle: 'All Products',route: 'ProductsScreen'),
+                DrawerMenu(menuTitle: 'Add Products',route: 'AddProductsScreen'),
+              ],
+            ),
+          ]),
+        )
       ]),
     );
   }
