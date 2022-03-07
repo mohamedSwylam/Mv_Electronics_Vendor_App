@@ -23,7 +23,7 @@ class AppCubit extends Cubit<AppStates>  {
       doc = document;
       emit(GetVendorSuccessStates());
     }).catchError((error){
-      emit(GetVendorErrorStates());
+      emit(GetVendorErrorStates(error.toString()));
     });
   }
 }

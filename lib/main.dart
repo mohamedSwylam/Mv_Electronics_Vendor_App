@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:mv_vendor_app/modules/Login/login_screen.dart';
+import 'package:mv_vendor_app/modules/add_products_screen/cubit/cubit.dart';
 import 'package:mv_vendor_app/modules/register/register_screen.dart';
 import 'package:mv_vendor_app/shared/bloc_observer.dart';
 import 'package:mv_vendor_app/shared/network/local/cache_helper.dart';
@@ -37,6 +38,9 @@ class MyApp extends StatelessWidget {
           create: (BuildContext context) => AppCubit()..getVendorData(),
         ),
         BlocProvider(
+          create: (BuildContext context) => AddProductCubit(),
+        ),
+        BlocProvider(
           create: (BuildContext context) => LoginCubit(),
         ),
         BlocProvider(
@@ -54,6 +58,7 @@ class MyApp extends StatelessWidget {
               theme: ThemeData(
                 fontFamily: 'Lato',
                 primaryColor: Colors.indigo,
+                primarySwatch: Colors.indigo,
               ),
               routes: {
                 'SplashScreen': (context) => SplashScreen(),
@@ -65,7 +70,7 @@ class MyApp extends StatelessWidget {
                 'RegisterScreenn': (context) => RegisterScreenn(),
                 'LandingScreen': (context) => LandingScreen(),
               },
-              initialRoute: 'AppLayout',
+              initialRoute: 'LoginScreen',
             );
           });
         },

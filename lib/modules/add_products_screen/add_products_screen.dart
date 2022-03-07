@@ -1,26 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mv_vendor_app/layout/cubit/cubit.dart';
-import 'package:mv_vendor_app/layout/cubit/states.dart';
-
+import '../../widget/add_product/general_tab.dart';
 import '../../widget/custom_drawer.dart';
+import 'cubit/cubit.dart';
+import 'cubit/states.dart';
+
 class AddProductsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AppCubit, AppStates>(
+    return BlocConsumer<AddProductCubit, AddProductStates>(
       listener: (context, state) {},
       builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            elevation: 0,
-            title: Text('Add new products'),
+        var cubit = AddProductCubit.get(context);
+        return DefaultTabController(
+          length: 5,
+          initialIndex: 0,
+          child: Scaffold(
+            appBar: AppBar(
+              elevation: 0,
+              title: Text('Add new products'),
+              bottom: TabBar(
+                  isScrollable: true,
+                  indicator: UnderlineTabIndicator(
+                    borderSide: BorderSide(width: 4, color: Colors.deepOrange),
+                  ),
+                  tabs: [
+                    Tab(
+                      child: Text('General'),
+                    ),
+                    Tab(
+                      child: Text('Inventory'),
+                    ),
+                    Tab(
+                      child: Text('Shipping'),
+                    ),
+                    Tab(
+                      child: Text('Linked Products'),
+                    ),
+                    Tab(
+                      child: Text('Images'),
+                    ),
+                  ]),
             ),
             drawer: CustomDrawer(),
-          body: Center(
-            child: Text(
-              'AddProductsScreen',
-              style: TextStyle(color: Colors.black),
+            body: TabBarView(
+              children: [
+                GeneralTab(),
+                Center(child: Text('Inventory Tab')),
+                Center(child: Text('Shipping Tab')),
+                Center(child: Text('Link Pro Tab')),
+                Center(child: Text('Taages Tab')),
+              ],
             ),
+            persistentFooterButtons: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  child: Text('Save Product'),
+                  onPressed: () {},
+                ),
+              ),
+            ],
           ),
         );
       },
