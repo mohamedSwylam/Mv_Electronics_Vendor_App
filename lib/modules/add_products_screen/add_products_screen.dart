@@ -57,7 +57,9 @@ class AddProductsScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: ElevatedButton(
                   child: Text('Save Product'),
-                  onPressed: () {},
+                  onPressed: () {
+                    print(cubit.categories);
+                  },
                 ),
               ),
             ],

@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
           create: (BuildContext context) => AppCubit()..getVendorData(),
         ),
         BlocProvider(
-          create: (BuildContext context) => AddProductCubit(),
+          create: (BuildContext context) => AddProductCubit()..getCategories(),
         ),
         BlocProvider(
           create: (BuildContext context) => LoginCubit(),

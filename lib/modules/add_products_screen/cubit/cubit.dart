@@ -3,14 +3,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mv_vendor_app/modules/Login/cubit/states.dart';
 import 'package:mv_vendor_app/modules/add_products_screen/cubit/states.dart';
 
+import '../../../services/firebase_service.dart';
+
 class AddProductCubit extends Cubit<AddProductStates> {
   AddProductCubit() : super(AddProductInitialState());
 
   static AddProductCubit get(context) => BlocProvider.of(context);
   Map<String, dynamic>? productData = {};
+  FirebaseService service = FirebaseService();
 
-  getFormData(String? productName, int? regularPrice, int? salesPrice,
-      String? taxStatus, String? taxPercentage) {
+  getFormData({String? productName,
+    int? regularPrice,
+    int? salesPrice,
+    String? taxStatus,
+    String? taxPercentage}) {
     if (productName != null) {
       productData!['productName'] = productName;
     }
@@ -27,5 +33,15 @@ class AddProductCubit extends Cubit<AddProductStates> {
       productData!['taxPercentage'] = taxPercentage;
     }
     emit(GetFormDataSuccessState());
+  }
+
+  List<String> categories = [];
+  getCategories() {
+    service.categories.get().then((value) {
+      value.docs.forEach((element) {
+        categories.add(element['catName']);
+      });
+      emit(GetCategoriesSuccessState());
+    });
   }
 }

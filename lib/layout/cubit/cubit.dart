@@ -17,6 +17,7 @@ class AppCubit extends Cubit<AppStates>  {
   static AppCubit get(context) => BlocProvider.of(context);
   FirebaseService service=FirebaseService();
   DocumentSnapshot? doc;
+  QuerySnapshot? snapshot;
   getVendorData() {
     emit(GetVendorLoadingStates());
     service.vendor.doc(service.user!.uid).get().then((document) {
@@ -26,4 +27,5 @@ class AppCubit extends Cubit<AppStates>  {
       emit(GetVendorErrorStates(error.toString()));
     });
   }
+  
 }
