@@ -21,6 +21,11 @@ class GeneralTab extends StatelessWidget {
               );
             },
           ),
+          CategoryDropDown(),
+          Padding(
+            padding: const EdgeInsets.only(top: 10.0,bottom: 10),
+            child: Text(cubit.mainCategory==null ? 'Select main Category': cubit.mainCategory!),
+          ),
           CustomTextFormField(
             labelText: 'Regular Price (\$)',
             inputType: TextInputType.number,
@@ -30,8 +35,8 @@ class GeneralTab extends StatelessWidget {
               );
             },
           ),
-          CategoryDropDown(),
-          CustomTextFormField(
+
+      CustomTextFormField(
             labelText: 'Sales Price (\$)',
             inputType: TextInputType.number,
             onChanged: (value) {
@@ -40,6 +45,7 @@ class GeneralTab extends StatelessWidget {
               );
             },
           ),
+
         ],
       ),
     );

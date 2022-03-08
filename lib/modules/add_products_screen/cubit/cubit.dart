@@ -49,6 +49,7 @@ class AddProductCubit extends Cubit<AddProductStates> {
     });
   }
   String? selectedCategory;
+  String? mainCategory;
   bool noCategorySelected = false;
   void dropDownButtonChange(selectedCat) {
     selectedCategory = selectedCat;
