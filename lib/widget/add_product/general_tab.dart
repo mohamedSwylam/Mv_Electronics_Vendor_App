@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mv_vendor_app/shared/components/custom_text_field.dart';
+import 'package:mv_vendor_app/widget/add_product/category_drop_down.dart';
 
 import '../../modules/add_products_screen/cubit/cubit.dart';
 
@@ -29,6 +30,7 @@ class GeneralTab extends StatelessWidget {
               );
             },
           ),
+          CategoryDropDown(),
           CustomTextFormField(
             labelText: 'Sales Price (\$)',
             inputType: TextInputType.number,

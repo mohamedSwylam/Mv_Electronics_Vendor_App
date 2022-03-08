@@ -5,6 +5,8 @@ class AddProductInitialState extends AddProductStates {}
 
 class GetFormDataSuccessState extends AddProductStates {}
 
+class OnCategoryNameChangeSuccessState extends AddProductStates {}
+
 class GetCategoriesLoadingStates extends AddProductStates {}
 
 class GetCategoriesSuccessState extends AddProductStates {}
