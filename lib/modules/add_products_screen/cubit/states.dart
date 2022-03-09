@@ -6,6 +6,10 @@ class GetFormDataSuccessState extends AddProductStates {}
 
 class OnCategoryNameChangeSuccessState extends AddProductStates {}
 
+class OnTaxStatusChangeSuccessState extends AddProductStates {}
+
+class OnTaxAmountChangeSuccessState extends AddProductStates {}
+
 class DoSetStateSuccessState extends AddProductStates {}
 
 class GetCategoriesLoadingStates extends AddProductStates {}

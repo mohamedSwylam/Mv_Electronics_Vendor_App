@@ -19,7 +19,7 @@ class AddProductCubit extends Cubit<AddProductStates> {
     String? category,
     String? mainCategory,
     String? subCategory,
-    String? taxPercentage}) {
+    int? taxPercentage}) {
     if (productName != null) {
       productData!['productName'] = productName;
     }
@@ -61,11 +61,29 @@ class AddProductCubit extends Cubit<AddProductStates> {
   bool noCategorySelected = false;
   void dropDownButtonChange(selectedCat) {
     selectedCategory = selectedCat;
-    getFormData();
+    getFormData(
+        category:selectedCat,
+    );
     noCategorySelected=false;
     emit(OnCategoryNameChangeSuccessState());
   }
    doSetState() {
     emit(DoSetStateSuccessState());
+  }
+  String? taxStatus;
+  int? taxAmount;
+  void dropDownTaxStatusButtonChange(selectedStatus) {
+    taxStatus = selectedStatus;
+    getFormData(
+      taxStatus: selectedStatus,
+    );
+    emit(OnTaxStatusChangeSuccessState());
+  }
+  void dropDownTaxAmountButtonChange(selectedAmount) {
+    taxAmount = int.parse(selectedAmount);
+    getFormData(
+      taxPercentage: taxAmount == 'GST-10%'? 10 : 12,
+    );
+    emit(OnTaxAmountChangeSuccessState());
   }
 }
