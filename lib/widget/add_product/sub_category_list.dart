@@ -32,12 +32,12 @@ class SubCategoryList extends StatelessWidget {
             }
             return ListView.builder(
                 itemCount: snapshot.data!.size,
-                itemBuilder: (contet, index) {
+                itemBuilder: (context, index) {
                   return ListTile(
                     title: Text(snapshot.data!.docs[index]['subCatName'],),
                     onTap: (){
                       cubit.getFormData(
-                        subCategory: snapshot.data!.docs[index]['subCategory']
+                        subCategory: snapshot.data!.docs[index]['subCatName']
                       );
                       Navigator.pop(context);
                     },
