@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mv_vendor_app/shared/components/custom_text_field.dart';
 import 'package:mv_vendor_app/widget/add_product/category_drop_down.dart';
 import 'package:mv_vendor_app/widget/add_product/sub_category_list.dart';
+import 'package:mv_vendor_app/widget/add_product/tax_amount_drop_down.dart';
+import 'package:mv_vendor_app/widget/add_product/tax_status_drop_down.dart';
 
 import '../../modules/add_products_screen/cubit/cubit.dart';
 import 'main_category_list.dart';
@@ -23,8 +25,21 @@ class GeneralTab extends StatelessWidget {
               );
             },
           ),
-        SizedBox (height: 30,),
-        CategoryDropDown(),
+          CustomTextFormField(
+            labelText: 'Enter Description',
+            inputType: TextInputType.multiline,
+            maxLine: 10,
+            minLine: 2,
+            onChanged: (value) {
+              cubit.getFormData(
+                description: value,
+              );
+            },
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          CategoryDropDown(),
           Padding(
             padding: const EdgeInsets.only(top: 20.0, bottom: 10),
             child: Row(
@@ -36,23 +51,27 @@ class GeneralTab extends StatelessWidget {
                       : cubit.productData!['mainCategory']!,
                   style: TextStyle(fontSize: 16, color: Colors.grey.shade700),
                 ),
-                if(cubit.selectedCategory!=null)
+                if (cubit.selectedCategory != null)
                   InkWell(
-                  child: Icon(Icons.arrow_drop_down),
-                  onTap: (){
-                    showDialog(context: context, builder: (context){
-                    return MainCategoryList(
-                    selectedCategory: cubit.selectedCategory,
-                    );
-                    }).whenComplete(() {
-                      cubit.doSetState();
-                    });
-                  },
-                ),
+                    child: Icon(Icons.arrow_drop_down),
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return MainCategoryList(
+                              selectedCategory: cubit.selectedCategory,
+                            );
+                          }).whenComplete(() {
+                        cubit.doSetState();
+                      });
+                    },
+                  ),
               ],
             ),
           ),
-          Divider (color: Colors.black,),
+          Divider(
+            color: Colors.black,
+          ),
           Padding(
             padding: const EdgeInsets.only(top: 10.0, bottom: 10),
             child: Row(
@@ -64,24 +83,29 @@ class GeneralTab extends StatelessWidget {
                       : cubit.productData!['subCategory']!,
                   style: TextStyle(fontSize: 16, color: Colors.grey.shade700),
                 ),
-                if(cubit.productData!['mainCategory']!=null)
+                if (cubit.productData!['mainCategory'] != null)
                   InkWell(
-                  child: Icon(Icons.arrow_drop_down),
-                  onTap: (){
-                    showDialog(context: context, builder: (context){
-                    return SubCategoryList(
-                    selectedMainCategory: cubit.productData!['mainCategory'],
-                    );
-                    }).whenComplete(() {
-                      cubit.doSetState();
-                    });
-                  },
-                ),
+                    child: Icon(Icons.arrow_drop_down),
+                    onTap: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return SubCategoryList(
+                              selectedMainCategory:
+                                  cubit.productData!['mainCategory'],
+                            );
+                          }).whenComplete(() {
+                        cubit.doSetState();
+                      });
+                    },
+                  ),
               ],
             ),
           ),
           Divider(color: Colors.black),
-          SizedBox (height: 30,),
+          SizedBox(
+            height: 30,
+          ),
           CustomTextFormField(
             labelText: 'Regular Price (\$)',
             inputType: TextInputType.number,
@@ -100,7 +124,37 @@ class GeneralTab extends StatelessWidget {
               );
             },
           ),
-          SizedBox (height: 30,),
+          Row(
+            children: [
+              InkWell(
+                onTap: () {
+                  showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime(5000),
+                  ).then((value) {
+                    cubit.getFormData(
+                      scheduleDate: value,
+                    );
+                  });
+                },
+                child: Text(
+                  'Schedule',
+                  style: TextStyle(color: Colors.blue),
+                ),
+              ),
+              Text(cubit.productData!['scheduleDate']),
+              ],
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          TaxStatusDropDown(),
+          Divider(
+            color: Colors.black,
+          ),
+          if (cubit.taxStatus == 'Taxable') TaxAmountDropDown(),
         ],
       ),
     );

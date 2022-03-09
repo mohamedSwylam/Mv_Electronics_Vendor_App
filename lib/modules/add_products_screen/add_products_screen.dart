@@ -58,7 +58,7 @@ class AddProductsScreen extends StatelessWidget {
                 child: ElevatedButton(
                   child: Text('Save Product'),
                   onPressed: () {
-                    print(cubit.categories);
+                    print(cubit.productData);
                   },
                 ),
               ),

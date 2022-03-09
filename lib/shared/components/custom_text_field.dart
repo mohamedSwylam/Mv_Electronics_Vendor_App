@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
 class CustomTextFormField extends StatelessWidget {
-  CustomTextFormField({this.hintText,this.inputType, this.onChanged, this.obscureText = false,this.validator,this.prefixText,this.labelText,this.controller});
+  CustomTextFormField({this.hintText,this.maxLine,this.minLine,this.inputType, this.onChanged, this.obscureText = false,this.validator,this.prefixText,this.labelText,this.controller});
   Function(String)? onChanged;
   String? hintText;
+  int? minLine;
+  int? maxLine;
   String? labelText;
   TextEditingController? controller;
   TextInputType?  inputType;
@@ -18,6 +20,8 @@ class CustomTextFormField extends StatelessWidget {
       onChanged: onChanged,
       validator: validator,
       keyboardType: inputType,
+      minLines: minLine,
+      maxLines: maxLine,
       decoration: InputDecoration(
         hintText: hintText,
         labelText: labelText,

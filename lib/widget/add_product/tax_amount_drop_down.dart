@@ -7,7 +7,7 @@ class TaxAmountDropDown extends StatelessWidget {
   Widget build(BuildContext context) {
     var cubit = AddProductCubit.get(context);
     return DropdownButtonFormField<String>(
-        value: cubit.taxAmount.toString(),
+        value: cubit.taxAmount,
         icon: const Icon(Icons.arrow_drop_down),
         elevation: 16,
         style: const TextStyle(color: Colors.deepPurple),
