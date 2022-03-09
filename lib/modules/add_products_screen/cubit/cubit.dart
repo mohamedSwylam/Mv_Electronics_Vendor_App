@@ -17,6 +17,8 @@ class AddProductCubit extends Cubit<AddProductStates> {
     int? salesPrice,
     String? taxStatus,
     String? category,
+    String? mainCategory,
+    String? subCategory,
     String? taxPercentage}) {
     if (productName != null) {
       productData!['productName'] = productName;
@@ -35,6 +37,12 @@ class AddProductCubit extends Cubit<AddProductStates> {
     }
     if (category!= null) {
       productData!['category'] = category;
+    }
+    if (mainCategory!= null) {
+      productData!['mainCategory'] = mainCategory;
+    }
+    if (subCategory!= null) {
+      productData!['subCategory'] = subCategory;
     }
     emit(GetFormDataSuccessState());
   }
@@ -57,5 +65,7 @@ class AddProductCubit extends Cubit<AddProductStates> {
     noCategorySelected=false;
     emit(OnCategoryNameChangeSuccessState());
   }
-
+   doSetState() {
+    emit(DoSetStateSuccessState());
+  }
 }

@@ -1,4 +1,3 @@
-
 abstract class AddProductStates {}
 
 class AddProductInitialState extends AddProductStates {}
@@ -6,6 +5,8 @@ class AddProductInitialState extends AddProductStates {}
 class GetFormDataSuccessState extends AddProductStates {}
 
 class OnCategoryNameChangeSuccessState extends AddProductStates {}
+
+class DoSetStateSuccessState extends AddProductStates {}
 
 class GetCategoriesLoadingStates extends AddProductStates {}
 
