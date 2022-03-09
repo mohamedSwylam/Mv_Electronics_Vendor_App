@@ -2,7 +2,7 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mv_vendor_app/modules/Login/cubit/states.dart';
 import 'package:mv_vendor_app/modules/add_products_screen/cubit/states.dart';
-
+import 'package:intl/intl.dart';
 import '../../../services/firebase_service.dart';
 
 class AddProductCubit extends Cubit<AddProductStates> {
@@ -11,6 +11,7 @@ class AddProductCubit extends Cubit<AddProductStates> {
   static AddProductCubit get(context) => BlocProvider.of(context);
   Map<String, dynamic>? productData = {};
   FirebaseService service = FirebaseService();
+  bool salePrice=false;
 
   getFormData({String? productName,
     int? regularPrice,
@@ -30,6 +31,7 @@ class AddProductCubit extends Cubit<AddProductStates> {
     }
     if (salesPrice != null) {
       productData!['salesPrice'] = salesPrice;
+      salePrice=true;
     }
     if (taxStatus != null) {
       productData!['taxStatus'] = taxStatus;
@@ -93,5 +95,10 @@ class AddProductCubit extends Cubit<AddProductStates> {
       taxPercentage: taxAmount == 'GST-10%'? 10 : 12,
     );
     emit(OnTaxAmountChangeSuccessState());
+  }
+  String formattedDate(date){
+    var outputFormat = DateFormat('dd/MM/yyyy hh:mn aa');
+    var outputDate = outputFormat.format(date);
+    return outputDate;
   }
 }
