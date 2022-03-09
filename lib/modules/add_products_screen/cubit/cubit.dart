@@ -19,9 +19,15 @@ class AddProductCubit extends Cubit<AddProductStates> {
     String? taxStatus,
     String? category,
     String? description,
+    String? sku,
     String? mainCategory,
     String? subCategory,
     DateTime? scheduleDate,
+    bool? manageInventory,
+    int? soh,
+    int? reorderLevel,
+    bool? chargeShipping,
+    int? shippingCharge,
     double? taxPercentage}) {
     if (productName != null) {
       productData!['productName'] = productName;
@@ -53,6 +59,24 @@ class AddProductCubit extends Cubit<AddProductStates> {
     }
     if (scheduleDate!= null) {
       productData!['scheduleDate'] = scheduleDate;
+    }
+    if (sku!= null) {
+      productData!['sku'] = sku;
+    }
+    if (manageInventory!= null) {
+      productData!['manageInventory'] = manageInventory;
+    }
+    if (soh!= null) {
+      productData!['soh'] = soh;
+    }
+    if (reorderLevel!= null) {
+      productData!['reorderLevel'] = reorderLevel;
+    }
+    if (chargeShipping!= null) {
+      productData!['chargeShipping'] = chargeShipping;
+    }
+    if (shippingCharge!= null) {
+      productData!['shippingCharge'] = shippingCharge;
     }
     emit(GetFormDataSuccessState());
   }
@@ -100,5 +124,21 @@ class AddProductCubit extends Cubit<AddProductStates> {
     var outputFormat = DateFormat('dd/MM/yyyy hh:mn aa');
     var outputDate = outputFormat.format(date);
     return outputDate;
+  }
+  bool? manageInventory =false;
+  manageInventoryChange(value){
+    manageInventory=value;
+    getFormData(
+      manageInventory: value,
+    );
+    emit(ManageInventoryChangeSuccessState());
+  }
+  bool? chargeShipping =false;
+  chargeShippingChange(value){
+    chargeShipping=value;
+    getFormData(
+      chargeShipping: value,
+    );
+    emit(ChargeShippingChangeSuccessState());
   }
 }

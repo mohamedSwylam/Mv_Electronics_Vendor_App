@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../widget/add_product/general_tab.dart';
+import '../../widget/add_product/inventory_tab.dart';
+import '../../widget/add_product/shipping_tab.dart';
 import '../../widget/custom_drawer.dart';
 import 'cubit/cubit.dart';
 import 'cubit/states.dart';
@@ -46,8 +48,8 @@ class AddProductsScreen extends StatelessWidget {
             body: TabBarView(
               children: [
                 GeneralTab(),
-                Center(child: Text('Inventory Tab')),
-                Center(child: Text('Shipping Tab')),
+                InventoryTab(),
+                ShippingTab(),
                 Center(child: Text('Link Pro Tab')),
                 Center(child: Text('Taages Tab')),
               ],

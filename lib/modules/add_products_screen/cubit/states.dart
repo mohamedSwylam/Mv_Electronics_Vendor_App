@@ -10,6 +10,10 @@ class OnTaxStatusChangeSuccessState extends AddProductStates {}
 
 class OnTaxAmountChangeSuccessState extends AddProductStates {}
 
+class ManageInventoryChangeSuccessState extends AddProductStates {}
+
+class ChargeShippingChangeSuccessState extends AddProductStates {}
+
 class DoSetStateSuccessState extends AddProductStates {}
 
 class GetCategoriesLoadingStates extends AddProductStates {}

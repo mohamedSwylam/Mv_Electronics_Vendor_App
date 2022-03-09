@@ -11,7 +11,7 @@ import '../../modules/add_products_screen/cubit/states.dart';
 import '../../services/firebase_service.dart';
 import 'main_category_list.dart';
 
-class InventoryTab extends StatelessWidget {
+class ShippingTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var cubit = AddProductCubit.get(context);
@@ -25,45 +25,23 @@ class InventoryTab extends StatelessWidget {
             padding: const EdgeInsets.all(20.0),
             child: ListView(
                 children: [
-                  CustomTextFormField(
-                    labelText: 'SKU',
-                    inputType: TextInputType.text,
-                    onChanged: (value) {
-                      cubit.getFormData(
-                        sku: value,
-                      );
-                    },
-                  ),
                   CheckboxListTile(
-                    value: cubit.manageInventory,
-                    onChanged: (value) => cubit.manageInventoryChange(value),
+                    value: cubit.chargeShipping,
+                    onChanged: (value) => cubit.chargeShippingChange(value),
                     contentPadding: EdgeInsets.zero,
                     title: Text(
-                      'Manage Inventory ?',
+                      'Change Shipping ?',
                       style: TextStyle(color: Colors.grey),
                     ),),
-                  if(cubit.manageInventory == true)
-                    Column(
-                      children: [
-                        CustomTextFormField(
-                          labelText: 'Stock on hand',
-                          inputType: TextInputType.number,
-                          onChanged: (value) {
-                            cubit.getFormData(
-                              soh: int.parse(value),
-                            );
-                          },
-                        ),
-                        CustomTextFormField(
-                          labelText: 'Re-Order Level',
-                          inputType: TextInputType.number,
-                          onChanged: (value) {
-                            cubit.getFormData(
-                              reorderLevel: int.parse(value),
-                            );
-                          },
-                        ),
-                      ],
+                  if(cubit.chargeShipping == true)
+                    CustomTextFormField(
+                      labelText: 'Shipping Charge',
+                      inputType: TextInputType.number,
+                      onChanged: (value) {
+                        cubit.getFormData(
+                          shippingCharge: int.parse(value),
+                        );
+                      },
                     ),
                 ]
             ),
