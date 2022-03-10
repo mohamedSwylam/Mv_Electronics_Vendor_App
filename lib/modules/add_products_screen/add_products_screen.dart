@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mv_vendor_app/widget/add_product/attribute_tab.dart';
 import '../../widget/add_product/general_tab.dart';
 import '../../widget/add_product/inventory_tab.dart';
 import '../../widget/add_product/shipping_tab.dart';
@@ -15,7 +16,7 @@ class AddProductsScreen extends StatelessWidget {
       builder: (context, state) {
         var cubit = AddProductCubit.get(context);
         return DefaultTabController(
-          length: 5,
+          length: 6,
           initialIndex: 0,
           child: Scaffold(
             appBar: AppBar(
@@ -37,6 +38,9 @@ class AddProductsScreen extends StatelessWidget {
                       child: Text('Shipping'),
                     ),
                     Tab(
+                      child: Text('Attributes'),
+                    ),
+                    Tab(
                       child: Text('Linked Products'),
                     ),
                     Tab(
@@ -50,6 +54,7 @@ class AddProductsScreen extends StatelessWidget {
                 GeneralTab(),
                 InventoryTab(),
                 ShippingTab(),
+                AttributesTab(),
                 Center(child: Text('Link Pro Tab')),
                 Center(child: Text('Taages Tab')),
               ],

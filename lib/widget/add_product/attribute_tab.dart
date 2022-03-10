@@ -25,7 +25,15 @@ class AttributesTab extends StatelessWidget {
             padding: const EdgeInsets.all(20.0),
             child: ListView(
                 children: [
-
+                  CustomTextFormField(
+                    labelText: 'Brand',
+                    inputType: TextInputType.text,
+                    onChanged: (value) {
+                      cubit.getFormData(
+                        shippingCharge: int.parse(value),
+                      );
+                    },
+                  ),
                 ]
             ),
           );

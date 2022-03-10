@@ -21,6 +21,7 @@ class AddProductCubit extends Cubit<AddProductStates> {
     String? description,
     String? sku,
     String? mainCategory,
+    String? brand,
     String? subCategory,
     DateTime? scheduleDate,
     bool? manageInventory,
@@ -77,6 +78,9 @@ class AddProductCubit extends Cubit<AddProductStates> {
     }
     if (shippingCharge!= null) {
       productData!['shippingCharge'] = shippingCharge;
+    }
+    if (brand!= null) {
+      productData!['brand'] = brand;
     }
     emit(GetFormDataSuccessState());
   }
