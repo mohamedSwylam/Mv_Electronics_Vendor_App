@@ -14,6 +14,12 @@ class ManageInventoryChangeSuccessState extends AddProductStates {}
 
 class ChargeShippingChangeSuccessState extends AddProductStates {}
 
+class AddSizeSuccessState extends AddProductStates {}
+
+class RemoveSizeSuccessState extends AddProductStates {}
+
+class OnChangeSizeSuccessState extends AddProductStates {}
+
 class DoSetStateSuccessState extends AddProductStates {}
 
 class GetCategoriesLoadingStates extends AddProductStates {}

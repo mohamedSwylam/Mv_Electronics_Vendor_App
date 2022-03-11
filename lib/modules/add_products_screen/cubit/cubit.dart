@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mv_vendor_app/modules/Login/cubit/states.dart';
 import 'package:mv_vendor_app/modules/add_products_screen/cubit/states.dart';
@@ -20,6 +21,7 @@ class AddProductCubit extends Cubit<AddProductStates> {
     String? category,
     String? description,
     String? sku,
+    String? otherDetails,
     String? mainCategory,
     String? brand,
     String? subCategory,
@@ -29,6 +31,7 @@ class AddProductCubit extends Cubit<AddProductStates> {
     int? reorderLevel,
     bool? chargeShipping,
     int? shippingCharge,
+    List? sizeList,
     double? taxPercentage}) {
     if (productName != null) {
       productData!['productName'] = productName;
@@ -42,6 +45,9 @@ class AddProductCubit extends Cubit<AddProductStates> {
     }
     if (taxStatus != null) {
       productData!['taxStatus'] = taxStatus;
+    }
+    if (otherDetails != null) {
+      productData!['otherDetails'] = otherDetails;
     }
     if (taxPercentage != null) {
       productData!['taxPercentage'] = taxPercentage;
@@ -81,6 +87,10 @@ class AddProductCubit extends Cubit<AddProductStates> {
     }
     if (brand!= null) {
       productData!['brand'] = brand;
+    }
+    if (sizeList!= null) {
+      productData!['size'] = sizeList;
+      saved=true;
     }
     emit(GetFormDataSuccessState());
   }
@@ -145,4 +155,28 @@ class AddProductCubit extends Cubit<AddProductStates> {
     );
     emit(ChargeShippingChangeSuccessState());
   }
+  final sizeText = TextEditingController();
+  List<String> sizeList = [];
+  addSize(){
+    sizeList.add(sizeText.text);
+    sizeText.clear();
+    entered=false;
+    saved=false;
+    emit(AddSizeSuccessState());
+  }
+  removeSize(index){
+    sizeList.removeAt(index);
+    getFormData(
+      sizeList: sizeList,
+    );
+    emit(RemoveSizeSuccessState());
+  }
+  onchangeSize(value){
+   if(value.isNotEmpty){
+     entered=true;
+     emit(OnChangeSizeSuccessState());
+   }
+  }
+  bool? saved= false;
+  bool? entered= false;
 }
