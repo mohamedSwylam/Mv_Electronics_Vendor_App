@@ -20,6 +20,8 @@ class RemoveSizeSuccessState extends AddProductStates {}
 
 class OnChangeSizeSuccessState extends AddProductStates {}
 
+class ChangedropDownUnitButtonChange extends AddProductStates {}
+
 class DoSetStateSuccessState extends AddProductStates {}
 
 class GetCategoriesLoadingStates extends AddProductStates {}

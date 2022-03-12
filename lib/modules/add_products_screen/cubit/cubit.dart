@@ -12,36 +12,41 @@ class AddProductCubit extends Cubit<AddProductStates> {
   static AddProductCubit get(context) => BlocProvider.of(context);
   Map<String, dynamic>? productData = {};
   FirebaseService service = FirebaseService();
-  bool salePrice=false;
+  bool salePrice = false;
 
-  getFormData({String? productName,
-    int? regularPrice,
-    int? salesPrice,
-    String? taxStatus,
-    String? category,
-    String? description,
-    String? sku,
-    String? otherDetails,
-    String? mainCategory,
-    String? brand,
-    String? subCategory,
-    DateTime? scheduleDate,
-    bool? manageInventory,
-    int? soh,
-    int? reorderLevel,
-    bool? chargeShipping,
-    int? shippingCharge,
-    List? sizeList,
-    double? taxPercentage}) {
+  getFormData(
+      {String? productName,
+      int? regularPrice,
+      int? salesPrice,
+      String? taxStatus,
+      String? category,
+      String? description,
+      String? sku,
+      String? otherDetails,
+      String? mainCategory,
+      String? brand,
+      String? subCategory,
+      String? unit,
+      DateTime? scheduleDate,
+      bool? manageInventory,
+      int? soh,
+      int? reorderLevel,
+      bool? chargeShipping,
+      int? shippingCharge,
+      List? sizeList,
+      double? taxPercentage}) {
     if (productName != null) {
       productData!['productName'] = productName;
+    }
+    if (unit != null) {
+      productData!['unit'] = unit;
     }
     if (regularPrice != null) {
       productData!['regularPrice'] = regularPrice;
     }
     if (salesPrice != null) {
       productData!['salesPrice'] = salesPrice;
-      salePrice=true;
+      salePrice = true;
     }
     if (taxStatus != null) {
       productData!['taxStatus'] = taxStatus;
@@ -52,50 +57,51 @@ class AddProductCubit extends Cubit<AddProductStates> {
     if (taxPercentage != null) {
       productData!['taxPercentage'] = taxPercentage;
     }
-    if (category!= null) {
+    if (category != null) {
       productData!['category'] = category;
     }
-    if (mainCategory!= null) {
+    if (mainCategory != null) {
       productData!['mainCategory'] = mainCategory;
     }
-    if (subCategory!= null) {
+    if (subCategory != null) {
       productData!['subCategory'] = subCategory;
     }
-    if (description!= null) {
+    if (description != null) {
       productData!['description'] = description;
     }
-    if (scheduleDate!= null) {
+    if (scheduleDate != null) {
       productData!['scheduleDate'] = scheduleDate;
     }
-    if (sku!= null) {
+    if (sku != null) {
       productData!['sku'] = sku;
     }
-    if (manageInventory!= null) {
+    if (manageInventory != null) {
       productData!['manageInventory'] = manageInventory;
     }
-    if (soh!= null) {
+    if (soh != null) {
       productData!['soh'] = soh;
     }
-    if (reorderLevel!= null) {
+    if (reorderLevel != null) {
       productData!['reorderLevel'] = reorderLevel;
     }
-    if (chargeShipping!= null) {
+    if (chargeShipping != null) {
       productData!['chargeShipping'] = chargeShipping;
     }
-    if (shippingCharge!= null) {
+    if (shippingCharge != null) {
       productData!['shippingCharge'] = shippingCharge;
     }
-    if (brand!= null) {
+    if (brand != null) {
       productData!['brand'] = brand;
     }
-    if (sizeList!= null) {
+    if (sizeList != null) {
       productData!['size'] = sizeList;
-      saved=true;
+      saved = true;
     }
     emit(GetFormDataSuccessState());
   }
 
   List<String> categories = [];
+
   getCategories() {
     service.categories.get().then((value) {
       value.docs.forEach((element) {
@@ -104,22 +110,27 @@ class AddProductCubit extends Cubit<AddProductStates> {
       emit(GetCategoriesSuccessState());
     });
   }
+
   String? selectedCategory;
   String? mainCategory;
   bool noCategorySelected = false;
+
   void dropDownButtonChange(String? selectedCat) {
     selectedCategory = selectedCat;
     getFormData(
-        category:selectedCat,
+      category: selectedCat,
     );
-    noCategorySelected=false;
+    noCategorySelected = false;
     emit(OnCategoryNameChangeSuccessState());
   }
-   doSetState() {
+
+  doSetState() {
     emit(DoSetStateSuccessState());
   }
+
   String? taxStatus;
   String? taxAmount;
+
   void dropDownTaxStatusButtonChange(String? selectedStatus) {
     taxStatus = selectedStatus;
     getFormData(
@@ -127,56 +138,78 @@ class AddProductCubit extends Cubit<AddProductStates> {
     );
     emit(OnTaxStatusChangeSuccessState());
   }
+
   void dropDownTaxAmountButtonChange(String? selectedAmount) {
     taxAmount = selectedAmount;
     getFormData(
-      taxPercentage: taxAmount == 'GST-10%'? 10 : 12,
+      taxPercentage: taxAmount == 'GST-10%' ? 10 : 12,
     );
     emit(OnTaxAmountChangeSuccessState());
   }
-  String formattedDate(date){
+
+  String formattedDate(date) {
     var outputFormat = DateFormat('dd/MM/yyyy hh:mn aa');
     var outputDate = outputFormat.format(date);
     return outputDate;
   }
-  bool? manageInventory =false;
-  manageInventoryChange(value){
-    manageInventory=value;
+
+  bool? manageInventory = false;
+
+  manageInventoryChange(value) {
+    manageInventory = value;
     getFormData(
       manageInventory: value,
     );
     emit(ManageInventoryChangeSuccessState());
   }
-  bool? chargeShipping =false;
-  chargeShippingChange(value){
-    chargeShipping=value;
+
+  bool? chargeShipping = false;
+
+  chargeShippingChange(value) {
+    chargeShipping = value;
     getFormData(
       chargeShipping: value,
     );
     emit(ChargeShippingChangeSuccessState());
   }
+
   final sizeText = TextEditingController();
   List<String> sizeList = [];
-  addSize(){
+
+  addSize() {
     sizeList.add(sizeText.text);
     sizeText.clear();
-    entered=false;
-    saved=false;
+    entered = false;
+    saved = false;
     emit(AddSizeSuccessState());
   }
-  removeSize(index){
+
+  removeSize(index) {
     sizeList.removeAt(index);
     getFormData(
       sizeList: sizeList,
     );
     emit(RemoveSizeSuccessState());
   }
-  onchangeSize(value){
-   if(value.isNotEmpty){
-     entered=true;
-     emit(OnChangeSizeSuccessState());
-   }
+
+  onchangeSize(value) {
+    if (value.isNotEmpty) {
+      entered = true;
+      emit(OnChangeSizeSuccessState());
+    }
   }
-  bool? saved= false;
-  bool? entered= false;
+
+  bool? saved = false;
+  bool? entered = false;
+  String? selectedUnit;
+  List<String> units = ['Kg', 'Gra', 'Liter', 'Nos', 'Feet', 'Yard', 'Set'];
+
+  void dropDownUnitButtonChange(String? selectedUnit) {
+    selectedUnit = selectedUnit;
+    getFormData(
+      unit: selectedUnit,
+    );
+    noCategorySelected = false;
+    emit(ChangedropDownUnitButtonChange());
+  }
 }

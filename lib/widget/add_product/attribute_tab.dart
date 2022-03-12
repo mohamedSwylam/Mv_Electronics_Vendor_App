@@ -55,7 +55,7 @@ class AttributesTab extends StatelessWidget {
                 height: 10,
               ),
               if (cubit.sizeList.isNotEmpty)
-                Container(
+                SizedBox(
                   height: 50,
                   child: ListView.builder(
                       shrinkWrap: true,
@@ -93,17 +93,26 @@ class AttributesTab extends StatelessWidget {
               if(cubit.sizeList.isNotEmpty)
               Column(
                 children: [
-                  Text(
-                    '* Long press to delete',
-                    style: TextStyle(color: Colors.grey, fontSize: 12),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      '* Long press to delete',
+                      style: TextStyle(color: Colors.grey, fontSize: 12),
+                    ),
                   ),
-                  ElevatedButton(
-                    child: Text(cubit.saved == true ? 'Saved' : 'Press To Save'),
-                    onPressed: () {
-                      cubit.getFormData(
-                        sizeList: cubit.sizeList,
-                      );
-                    },
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          child: Text(cubit.saved == true ? 'Saved' : 'Press To Save'),
+                          onPressed: () {
+                            cubit.getFormData(
+                              sizeList: cubit.sizeList,
+                            );
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
