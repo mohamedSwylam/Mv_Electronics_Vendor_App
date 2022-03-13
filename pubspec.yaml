@@ -72,6 +72,9 @@ dependencies:
   flutterfire_ui: ^0.3.0
   email_validator: ^2.0.1
   flutter_easyloading: ^3.0.3
+  file_picker: ^4.4.0
+  mime_type: ^1.0.0
+  path: ^1.8.0
 
 dev_dependencies:
   flutter_test:

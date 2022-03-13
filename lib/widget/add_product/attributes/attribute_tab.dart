@@ -5,11 +5,12 @@ import 'package:mv_vendor_app/widget/add_product/category_drop_down.dart';
 import 'package:mv_vendor_app/widget/add_product/sub_category_list.dart';
 import 'package:mv_vendor_app/widget/add_product/tax_amount_drop_down.dart';
 import 'package:mv_vendor_app/widget/add_product/tax_status_drop_down.dart';
+import 'package:mv_vendor_app/widget/add_product/unit_dropdown.dart';
 
-import '../../modules/add_products_screen/cubit/cubit.dart';
-import '../../modules/add_products_screen/cubit/states.dart';
-import '../../services/firebase_service.dart';
-import 'main_category_list.dart';
+import '../../../modules/add_products_screen/cubit/cubit.dart';
+import '../../../modules/add_products_screen/cubit/states.dart';
+import '../../../services/firebase_service.dart';
+import '../main_category_list.dart';
 
 class AttributesTab extends StatelessWidget {
   @override
@@ -33,6 +34,7 @@ class AttributesTab extends StatelessWidget {
                   );
                 },
               ),
+              UnitDropDown(),
               Row(
                 children: [
                   Expanded(

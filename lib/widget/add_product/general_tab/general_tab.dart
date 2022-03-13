@@ -6,10 +6,10 @@ import 'package:mv_vendor_app/widget/add_product/sub_category_list.dart';
 import 'package:mv_vendor_app/widget/add_product/tax_amount_drop_down.dart';
 import 'package:mv_vendor_app/widget/add_product/tax_status_drop_down.dart';
 
-import '../../modules/add_products_screen/cubit/cubit.dart';
-import '../../modules/add_products_screen/cubit/states.dart';
-import '../../services/firebase_service.dart';
-import 'main_category_list.dart';
+import '../../../modules/add_products_screen/cubit/cubit.dart';
+import '../../../modules/add_products_screen/cubit/states.dart';
+import '../../../services/firebase_service.dart';
+import '../main_category_list.dart';
 
 class GeneralTab extends StatelessWidget {
   @override
@@ -130,6 +130,9 @@ class GeneralTab extends StatelessWidget {
                   labelText: 'Sales Price (\$)',
                   inputType: TextInputType.number,
                   onChanged: (value) {
+                    if(int.parse(value)>cubit.productData! ['regularPrice']){
+                    cubit.scaffold('Sales price should be less than regular price',context);
+                    return;}
                     cubit.getFormData(
                       salesPrice: int.parse(value),
                     );
