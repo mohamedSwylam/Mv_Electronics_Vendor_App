@@ -21,7 +21,9 @@ class CategoryDropDown extends StatelessWidget {
       );
     }).toList(),
     validator: (value){
-    return 'Select category';
+      if(value!.isEmpty) {
+        return 'Select Category';
+      }
       }
     );
 

@@ -21,7 +21,9 @@ class UnitDropDown extends StatelessWidget {
           );
         }).toList(),
         validator: (value){
-          return 'Select Unit';
+    if(value!.isEmpty) {
+      return 'Select Unit';
+    }
         }
     );
 

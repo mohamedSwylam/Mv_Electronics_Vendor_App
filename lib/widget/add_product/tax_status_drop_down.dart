@@ -21,7 +21,9 @@ class TaxStatusDropDown extends StatelessWidget {
           );
         }).toList(),
         validator: (value){
-          return 'Select Tax Status';
+          if(value!.isEmpty) {
+            return 'Select Tax Status';
+          }
         }
     );
 

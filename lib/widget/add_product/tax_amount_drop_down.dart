@@ -21,7 +21,9 @@ class TaxAmountDropDown extends StatelessWidget {
           );
         }).toList(),
         validator: (value){
-          return 'Select Tax Amount';
+          if(value!.isEmpty) {
+            return 'Select Tax Amount';
+          }
         }
     );
 
