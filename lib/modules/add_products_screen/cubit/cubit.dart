@@ -260,6 +260,44 @@ class AddProductCubit extends Cubit<AddProductStates> {
       ),
     );
   }
-
+  saveToDb({CollectionReference collection, Map<String, dynamic>? data}) async {
+    EasyLoading.show();
+    var ref = firebase_storage.FirebaseStorage.instance
+        .ref('categoryImage/$fileName');
+    try {
+      String? mimiType = mime(
+        basename(fileName!),
+      );
+      var metaData = firebase_storage.SettableMetadata(contentType: mimiType);
+      firebase_storage.TaskSnapshot uploadSnapshot =
+      await ref.putData(image, metaData);
+      await ref.putData(image); //now image will upload to firebase storage.
+      //now need to get the download link of that image to save in fireStore
+      String downloadURL =
+      await uploadSnapshot.ref.getDownloadURL().then((value) {
+        if (value.isNotEmpty) {
+          url = value;
+          service.saveCategory(
+            data: {
+              'catName': catName.text,
+              'image': '$value.png',
+              'active': true,
+            },
+            docName: catName.text,
+            reference: service.categories,
+          ).then((value) {
+            clear();
+            EasyLoading.dismiss();
+          });
+        }
+        emit(SaveImageToDbSuccessState());
+        //save data to firestore
+        return value;
+      });
+    } on FirebaseException catch (e) {
+      EasyLoading.dismiss();
+      emit(SaveImageToDbErrorState(e.toString()));
+    }
+  }
 
 }
