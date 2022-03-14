@@ -321,6 +321,10 @@ class AddProductCubit extends Cubit<AddProductStates> {
     });
   }
 
-
+  clearProductData() {
+    productData!.clear();
+    imageFiles!.clear();
+    productData!['approved'] = false;
+  }
 
 }
