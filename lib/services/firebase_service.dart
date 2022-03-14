@@ -17,8 +17,8 @@ class FirebaseService {
   CollectionReference subCategories =
   FirebaseFirestore.instance.collection('subCategories');
   CollectionReference vendor = FirebaseFirestore.instance.collection('vendor');
-  CollectionReference product = FirebaseFirestore.instance.collection(
-      'product');
+  CollectionReference products = FirebaseFirestore.instance.collection(
+      'products');
   User? user = FirebaseAuth.instance.currentUser;
   firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;

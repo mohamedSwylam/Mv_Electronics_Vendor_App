@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:mv_vendor_app/layout/cubit/cubit.dart';
 import 'package:mv_vendor_app/services/firebase_service.dart';
 import 'package:mv_vendor_app/widget/add_product/attributes/attribute_tab.dart';
 import 'package:mv_vendor_app/widget/add_product/image_tab/image_tab.dart';
@@ -17,7 +19,7 @@ class AddProductsScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         var cubit = AddProductCubit.get(context);
-        FirebaseService service=FirebaseService();
+        FirebaseService service = FirebaseService();
         return Form(
           key: cubit.formKey,
           child: DefaultTabController(
@@ -31,7 +33,7 @@ class AddProductsScreen extends StatelessWidget {
                     isScrollable: true,
                     indicator: UnderlineTabIndicator(
                       borderSide:
-                          BorderSide(width: 4, color: Colors.deepOrange),
+                      BorderSide(width: 4, color: Colors.deepOrange),
                     ),
                     tabs: [
                       Tab(
@@ -72,11 +74,11 @@ class AddProductsScreen extends StatelessWidget {
                     child: Text('Save Product'),
                     onPressed: () {
                       if (cubit.imageFiles!.isEmpty) {
-                        cubit.scaffold('Image not selected',context);
+                        cubit.scaffold('Image not selected', context);
                         return;
                       }
                       if (cubit.formKey.currentState!.validate()) {
-                        service.uploadFiles(images: cubit.imageFiles, ref: 'products/',context: context)
+
                       }
                     },
                   ),

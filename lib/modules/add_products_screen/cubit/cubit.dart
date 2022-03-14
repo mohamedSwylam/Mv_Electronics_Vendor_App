@@ -3,10 +3,12 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mv_vendor_app/modules/Login/cubit/states.dart';
 import 'package:mv_vendor_app/modules/add_products_screen/cubit/states.dart';
 import 'package:intl/intl.dart';
+import '../../../layout/cubit/cubit.dart';
 import '../../../services/firebase_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
@@ -26,28 +28,31 @@ class AddProductCubit extends Cubit<AddProductStates> {
   FirebaseService service = FirebaseService();
   bool salePrice = false;
 
-  getFormData(
-      {String? productName,
-      int? regularPrice,
-      int? salesPrice,
-      String? taxStatus,
-      String? category,
-      String? description,
-      String? sku,
-      String? otherDetails,
-      String? mainCategory,
-      String? brand,
-      String? subCategory,
-      String? unit,
-      DateTime? scheduleDate,
-      bool? manageInventory,
-      int? soh,
-      int? reorderLevel,
-      bool? chargeShipping,
-      int? shippingCharge,
-      List? sizeList,
-      List? imageUrls,
-      double? taxPercentage}) {
+  getFormData({String? productName,
+    int? regularPrice,
+    int? salesPrice,
+    String? taxStatus,
+    String? category,
+    String? description,
+    String? sku,
+    String? otherDetails,
+    String? mainCategory,
+    String? brand,
+    String? subCategory,
+    String? unit,
+    DateTime? scheduleDate,
+    bool? manageInventory,
+    int? soh,
+    int? reorderLevel,
+    bool? chargeShipping,
+    int? shippingCharge,
+    List? sizeList,
+    List? imageUrls,
+    Map<String, dynamic>? seller,
+    double? taxPercentage}) {
+    if (seller != null) {
+      productData!['seller'] = seller;
+    }
     if (productName != null) {
       productData!['productName'] = productName;
     }
@@ -276,12 +281,46 @@ class AddProductCubit extends Cubit<AddProductStates> {
     );
   }
 
-  Future<void> saveToDb(
-      {BuildContext? context,
-      CollectionReference? collection,
-      Map<String, dynamic>? data}) {
+  Future<void> saveToDb({BuildContext? context,
+    CollectionReference? collection,
+    Map<String, dynamic>? data}) {
     return collection!.add(data).then((value) =>
         scaffold(context, "This product is saved").catchError(
-            (error) => scaffold(context, "Failed to add product: $error")));
+                (error) => scaffold(context, "Failed to add product: $error")));
   }
+
+  Future<void> uploadProduct(context) async {
+    EasyLoading.show();
+    getFormData(
+      seller: {
+        'name': AppCubit
+            .get(context)
+            .vendor!
+            .businessName,
+        'uid': service.user!.uid,
+      },
+    );
+    service.uploadFiles(images: imageFiles,
+        ref: 'products/${AppCubit
+            .get(context)
+            .vendor!
+            .businessName}/${productData!['productName']}/${DateTime
+            .now()
+            .microsecondsSinceEpoch}',
+        context: context).then((value) {
+      if (value.isNotEmpty) {
+        saveToDb(
+          context: context,
+          data: productData,
+        ).then((value) {
+          EasyLoading.dismiss();
+          clearProductData();
+          emit(UploadProductSuccessState());
+        });
+      }
+    });
+  }
+
+
+
 }

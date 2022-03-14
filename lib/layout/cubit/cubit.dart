@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mv_vendor_app/layout/cubit/states.dart';
+import 'package:mv_vendor_app/models/vendor_model.dart';
 import 'package:mv_vendor_app/modules/account_screen/account_screen.dart';
 import 'package:mv_vendor_app/modules/categoryy_screen/category_screen.dart';
 import 'package:mv_vendor_app/modules/chat_screen/chat_screen.dart';
@@ -18,10 +19,12 @@ class AppCubit extends Cubit<AppStates>  {
   FirebaseService service=FirebaseService();
   DocumentSnapshot? doc;
   QuerySnapshot? snapshot;
+  Vendor? vendor;
   getVendorData() {
     emit(GetVendorLoadingStates());
     service.vendor.doc(service.user!.uid).get().then((document) {
       doc = document;
+     vendor= Vendor. fromJson(document.data() as Map<String, dynamic>);
       emit(GetVendorSuccessStates());
     }).catchError((error){
       emit(GetVendorErrorStates(error.toString()));

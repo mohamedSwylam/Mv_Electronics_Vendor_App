@@ -33,6 +33,7 @@ class GetCategoriesErrorStates extends AddProductStates {
 
   GetCategoriesErrorStates(this.error);
 }
+
 class PickedImageSuccessState extends AddProductStates {}
 
 class PickedImageErrorState extends AddProductStates {
@@ -50,3 +51,5 @@ class SaveImageToDbErrorState extends AddProductStates {
 }
 
 class RemoveImageSuccessState extends AddProductStates {}
+
+class UploadProductSuccessState extends AddProductStates {}
