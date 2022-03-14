@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mv_vendor_app/layout/cubit/cubit.dart';
 import 'package:mv_vendor_app/modules/add_products_screen/cubit/cubit.dart';
@@ -39,7 +40,7 @@ class FirebaseService {
         .catchError((error) => print("Failed to add Vendor: $error"));
   }
 
-  Future<List> uploadFiles(List<XFile>? images, String? ref,context) async {
+  Future<List> uploadFiles({List<XFile>? images, String? ref,BuildContext? context}) async {
     var imageUrls = await Future.wait(
         images!.map(
               (image) => uploadFile(image: File(image.path), reference: ref),

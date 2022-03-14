@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mv_vendor_app/services/firebase_service.dart';
 import 'package:mv_vendor_app/widget/add_product/attributes/attribute_tab.dart';
 import 'package:mv_vendor_app/widget/add_product/image_tab/image_tab.dart';
 import '../../widget/add_product/general_tab/general_tab.dart';
@@ -16,6 +17,7 @@ class AddProductsScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         var cubit = AddProductCubit.get(context);
+        FirebaseService service=FirebaseService();
         return Form(
           key: cubit.formKey,
           child: DefaultTabController(
@@ -73,7 +75,9 @@ class AddProductsScreen extends StatelessWidget {
                         cubit.scaffold('Image not selected',context);
                         return;
                       }
-                      if (cubit.formKey.currentState!.validate()) {}
+                      if (cubit.formKey.currentState!.validate()) {
+                        service.uploadFiles(images: cubit.imageFiles, ref: 'products/',context: context)
+                      }
                     },
                   ),
                 ),

@@ -18,14 +18,11 @@ import 'package:mime_type/mime_type.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:path/path.dart';
 
-
 class AddProductCubit extends Cubit<AddProductStates> {
   AddProductCubit() : super(AddProductInitialState());
 
   static AddProductCubit get(context) => BlocProvider.of(context);
-  Map<String, dynamic>? productData = {
-    'approved':false
-  };
+  Map<String, dynamic>? productData = {'approved': false};
   FirebaseService service = FirebaseService();
   bool salePrice = false;
 
@@ -221,7 +218,15 @@ class AddProductCubit extends Cubit<AddProductStates> {
   bool? saved = false;
   bool? entered = false;
   String? selectedUnit;
-  final List<String> units = ['Kg', 'Gra', 'Liter', 'Nos', 'Feet', 'Yard', 'Set'];
+  final List<String> units = [
+    'Kg',
+    'Gra',
+    'Liter',
+    'Nos',
+    'Feet',
+    'Yard',
+    'Set'
+  ];
 
   void dropDownUnitButtonChange(String? selectedUnit) {
     selectedUnit = selectedUnit;
@@ -231,6 +236,7 @@ class AddProductCubit extends Cubit<AddProductStates> {
     noCategorySelected = false;
     emit(ChangedropDownUnitButtonChange());
   }
+
   dynamic image;
   String? fileName;
   String? url;
@@ -238,21 +244,24 @@ class AddProductCubit extends Cubit<AddProductStates> {
   final TextEditingController catName = TextEditingController();
 
   final ImagePicker picker = ImagePicker();
-  List<XFile>? imageFiles=[];
+  List<XFile>? imageFiles = [];
+
   Future<List<XFile>?> pickImage() async {
-    final List<XFile>? images= await picker.pickMultiImage().then((value) {
+    final List<XFile>? images = await picker.pickMultiImage().then((value) {
       var list = value!.forEach((element) {
-          imageFiles!.add(element);
-          emit(PickedImageSuccessState());
+        imageFiles!.add(element);
+        emit(PickedImageSuccessState());
       });
     }).catchError((error) {
       emit(PickedImageErrorState(error.toString()));
     });
   }
-  removeImage(index){
+
+  removeImage(index) {
     imageFiles!.removeAt(index);
     emit(RemoveImageSuccessState());
   }
+
   scaffold(message, context) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -266,11 +275,13 @@ class AddProductCubit extends Cubit<AddProductStates> {
       ),
     );
   }
-  Future<void> saveToDb({BuildContext? context, CollectionReference? collection, Map<String,dynamic>? data){
-  // Call the user's CollectionReference to add a new user
-  return collection!
-      .add(data)
-      .then((value) => scaffold(context, "This product is saved")
-      .catchError((error) => scaffold(context, "Failed to add user: $error"));
 
+  Future<void> saveToDb(
+      {BuildContext? context,
+      CollectionReference? collection,
+      Map<String, dynamic>? data}) {
+    return collection!.add(data).then((value) =>
+        scaffold(context, "This product is saved").catchError(
+            (error) => scaffold(context, "Failed to add product: $error")));
+  }
 }
