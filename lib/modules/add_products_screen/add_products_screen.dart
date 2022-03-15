@@ -78,7 +78,7 @@ class AddProductsScreen extends StatelessWidget {
                         return;
                       }
                       if (cubit.formKey.currentState!.validate()) {
-                        cubit.uploadProduct(context);
+                        cubit.saveToDb(context);
                       }
                     },
                   ),

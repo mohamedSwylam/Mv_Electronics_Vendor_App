@@ -30,7 +30,7 @@ class AttributesTab extends StatelessWidget {
                 inputType: TextInputType.text,
                 onChanged: (value) {
                   cubit.getFormData(
-                    shippingCharge: int.parse(value),
+                    brand: value,
                   );
                 },
               ),

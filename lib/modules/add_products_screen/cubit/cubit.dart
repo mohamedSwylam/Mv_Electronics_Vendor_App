@@ -281,14 +281,9 @@ class AddProductCubit extends Cubit<AddProductStates> {
     );
   }
 
-  Future<void> saveToDb({BuildContext? context,
-    Map<String, dynamic>? data}) {
-    return service.products.add(data).then((value) =>
-        scaffold("This product is saved",context).catchError(
-                (error) => scaffold(context, "Failed to add product: $error")));
-  }
 
-  Future<void> uploadProduct(context) async {
+
+  Future<void> saveToDb(context) async {
     EasyLoading.show();
     getFormData(
       seller: {
@@ -306,9 +301,8 @@ class AddProductCubit extends Cubit<AddProductStates> {
             .businessName}/${productData!['productName']}',
         context: context).then((value) {
       if (value.isNotEmpty) {
-        saveToDb(
-          context: context,
-          data: productData,
+        service.products.add(productData).then((value) =>
+            scaffold("This product is saved",context)
         ).then((value) {
           EasyLoading.dismiss();
           clearProductData();
