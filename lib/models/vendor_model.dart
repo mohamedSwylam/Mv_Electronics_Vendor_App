@@ -1,9 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Vendor {
-
-
-
   final bool? approved;
   final String? businessName;
   final String? city;

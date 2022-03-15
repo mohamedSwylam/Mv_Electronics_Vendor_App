@@ -13,8 +13,9 @@ class Product {
   final String? brand;
   final String? subCategory;
   final String? unit;
-  final DateTime? scheduleDate;
+  final Timestamp? scheduleDate;
   final bool? manageInventory;
+  final bool? approved;
   final int? soh;
   final int? reorderLevel;
   final bool? chargeShipping;
@@ -24,59 +25,61 @@ class Product {
   final Map<String, dynamic>? seller;
   final double? taxPercentage;
 
-  Product(
-      {this.productName,
-      this.regularPrice,
-      this.salesPrice,
-      this.taxStatus,
-      this.category,
-      this.description,
-      this.sku,
-      this.otherDetails,
-      this.mainCategory,
-      this.brand,
-      this.subCategory,
-      this.unit,
-      this.scheduleDate,
-      this.manageInventory,
-      this.soh,
-      this.reorderLevel,
-      this.chargeShipping,
-      this.shippingCharge,
-      this.sizeList,
-      this.imageUrls,
-      this.seller,
-      this.taxPercentage});
+  Product({this.productName,
+    this.regularPrice,
+    this.salesPrice,
+    this.taxStatus,
+    this.category,
+    this.description,
+    this.sku,
+    this.otherDetails,
+    this.mainCategory,
+    this.brand,
+    this.subCategory,
+    this.unit,
+    this.scheduleDate,
+    this.manageInventory,
+    this.soh,
+    this.reorderLevel,
+    this.chargeShipping,
+    this.shippingCharge,
+    this.sizeList,
+    this.imageUrls,
+    this.approved,
+    this.seller,
+    this.taxPercentage});
 
   Product.fromJson(Map<String, Object?> json)
       : this(
-          productName: json['productName']! as String,
-          regularPrice: json['regularPrice']! as int,
-          salesPrice: json['salesPrice']! as int,
-          taxStatus: json['taxStatus']! as String,
-          category: json['category']! as String,
-          description: json['description']! as String,
-          sku: json['sku']! as String,
-          otherDetails: json['otherDetails']! as String,
-          mainCategory: json['mainCategory']! as String,
-          brand: json['brand'] as String,
-          subCategory: json['subCategory']! as String,
-          unit: json['unit']! as String,
-          scheduleDate: json['scheduleDate']! as DateTime,
-          manageInventory: json['manageInventory']! as bool,
-          soh: json['soh']! as int,
-          reorderLevel: json['reorderLevel']! as int,
-          chargeShipping: json['chargeShipping']! as bool,
-          shippingCharge: json['shippingCharge']! as int,
-          sizeList: json['sizeList']! as List,
-          imageUrls: json['imageUrls']! as List,
-          seller: json['seller']! as Map<String, dynamic>,
-          taxPercentage: json['taxPercentage']! as double,
-        );
+    productName: json['productName']! as String,
+    regularPrice: json['regularPrice']! as int,
+    salesPrice: json['salesPrice']! as int,
+    taxStatus: json['taxStatus']! as String,
+    category: json['category']! as String,
+    description: json['description']! as String,
+    sku: json['sku']! as String,
+    otherDetails: json['otherDetails']! as String,
+    mainCategory: json['mainCategory']! as String,
+    brand: json['brand'] as String,
+    subCategory: json['subCategory']! as String,
+    unit: json['unit']! as String,
+    scheduleDate: json['scheduleDate']! as Timestamp,
+    manageInventory: json['manageInventory']! as bool,
+    approved: json['approved']! as bool,
+    soh: json['soh']! as int,
+    reorderLevel: json['reorderLevel']! as int,
+    chargeShipping: json['chargeShipping']! as bool,
+    shippingCharge: json['shippingCharge']! as int,
+    sizeList: json['sizeList']! as List,
+    imageUrls: json['imageUrls']! as List,
+    seller: json['seller']! as Map<String, dynamic>,
+    taxPercentage: json['taxPercentage']! as double,
+  );
 
   Map<String, Object?> toJson() {
     return {
       'productName': productName,
+      'approved': approved,
       'regularPrice': regularPrice,
       'salesPrice': salesPrice,
       'taxStatus': taxStatus,
@@ -100,4 +103,12 @@ class Product {
       'taxPercentage': taxPercentage,
     };
   }
+}
+productQuery(approved){
+  return FirebaseFirestore.instance.collection('products').where('approved',isEqualTo: approved)
+      .orderBy('productName')
+      .withConverter<Product>(
+      fromFirestore: (snapshot, _) => Product.fromJson(snapshot.data()!),
+      toFirestore: (product, _) =>product.toJson(),
+  );
 }
