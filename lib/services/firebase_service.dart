@@ -53,7 +53,9 @@ class FirebaseService {
 
   Future uploadFile({File? image, String? reference,}) async {
     firebase_storage.Reference storageReference = storage.ref().child(
-        reference!);
+        '$reference/${DateTime
+            .now()
+            .microsecondsSinceEpoch}');
 
     firebase_storage.UploadTask uploadTask = storageReference.putFile(image!);
     await uploadTask;

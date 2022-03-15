@@ -282,10 +282,9 @@ class AddProductCubit extends Cubit<AddProductStates> {
   }
 
   Future<void> saveToDb({BuildContext? context,
-    CollectionReference? collection,
     Map<String, dynamic>? data}) {
-    return collection!.add(data).then((value) =>
-        scaffold(context, "This product is saved").catchError(
+    return service.products.add(data).then((value) =>
+        scaffold("This product is saved",context).catchError(
                 (error) => scaffold(context, "Failed to add product: $error")));
   }
 
@@ -304,9 +303,7 @@ class AddProductCubit extends Cubit<AddProductStates> {
         ref: 'products/${AppCubit
             .get(context)
             .vendor!
-            .businessName}/${productData!['productName']}/${DateTime
-            .now()
-            .microsecondsSinceEpoch}',
+            .businessName}/${productData!['productName']}',
         context: context).then((value) {
       if (value.isNotEmpty) {
         saveToDb(
