@@ -23,7 +23,7 @@ class ProductsScreen extends StatelessWidget {
           drawer: CustomDrawer(),
           body: Center(
             child: Text(
-              'ProductsScreen',
+              'Product List',
               style: TextStyle(color: Colors.black),
             ),
           ),

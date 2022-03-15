@@ -28,7 +28,8 @@ class AddProductCubit extends Cubit<AddProductStates> {
   FirebaseService service = FirebaseService();
   bool salePrice = false;
 
-  getFormData({String? productName,
+  getFormData({
+    String? productName,
     int? regularPrice,
     int? salesPrice,
     String? taxStatus,
