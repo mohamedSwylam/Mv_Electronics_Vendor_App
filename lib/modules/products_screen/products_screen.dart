@@ -15,16 +15,21 @@ class ProductsScreen extends StatelessWidget {
         if (cubit.doc == null) {
           cubit.getVendorData();
         }
-        return Scaffold(
-          appBar: AppBar(
-            elevation: 0,
-            title: Text('Product List'),
-          ),
-          drawer: CustomDrawer(),
-          body: Center(
-            child: Text(
-              'Product List',
-              style: TextStyle(color: Colors.black),
+        return DefaultTabController(
+          length: 2,
+          initialIndex: 0,
+
+          child: Scaffold(
+            appBar: AppBar(
+              elevation: 0,
+              title: Text('Product List'),
+            ),
+            drawer: CustomDrawer(),
+            body: Center(
+              child: Text(
+                'Product List',
+                style: TextStyle(color: Colors.black),
+              ),
             ),
           ),
         );
