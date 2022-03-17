@@ -37,11 +37,15 @@ class ProductsScreen extends StatelessWidget {
               ),
             ),
             drawer: CustomDrawer(),
-            body: const Center(
-              child: Text(
-                'Product List',
-                style: TextStyle(color: Colors.black),
-              ),
+            body: TabBarView(
+              children: [
+                Center(
+                  child: Text('Un Pulished Products'),
+                ),
+                Center(
+                  child: Text('Pulished Products'),
+                ),
+              ],
             ),
           ),
         );
