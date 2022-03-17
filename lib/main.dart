@@ -17,6 +17,7 @@ import 'package:sizer/sizer.dart';
 import 'modules/Login/cubit/cubit.dart';
 import 'modules/add_products_screen/add_products_screen.dart';
 import 'modules/home_screen/home_screen.dart';
+import 'modules/products_screen/cubit/cubit.dart';
 import 'modules/products_screen/products_screen.dart';
 import 'modules/register/cubit/cubit.dart';
 import 'modules/splash_screen.dart';
@@ -39,6 +40,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (BuildContext context) => AddProductCubit()..getCategories(),
+        ),
+        BlocProvider(
+          create: (BuildContext context) => ProductCubit(),
         ),
         BlocProvider(
           create: (BuildContext context) => LoginCubit(),

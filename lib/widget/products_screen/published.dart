@@ -3,14 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../modules/add_products_screen/cubit/cubit.dart';
 import '../../../modules/add_products_screen/cubit/states.dart';
 import '../../../services/firebase_service.dart';
+import '../../modules/products_screen/cubit/cubit.dart';
+import '../../modules/products_screen/cubit/states.dart';
 
 
 class PublishedTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var cubit = AddProductCubit.get(context);
+    var cubit = ProductCubit.get(context);
     FirebaseService service = FirebaseService();
-    return BlocConsumer<AddProductCubit, AddProductStates>(
+    return BlocConsumer<ProductCubit, ProductStates>(
         listener: (context, state) {},
         builder: (context, state) {
           return Padding(
