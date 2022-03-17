@@ -18,14 +18,26 @@ class ProductsScreen extends StatelessWidget {
         return DefaultTabController(
           length: 2,
           initialIndex: 0,
-
           child: Scaffold(
             appBar: AppBar(
               elevation: 0,
               title: Text('Product List'),
+              bottom: const TabBar(
+                indicator: UnderlineTabIndicator(
+                  borderSide: BorderSide(width: 6, color: Colors.deepOrange),
+                ),
+                tabs: [
+                  Tab(
+                    child: Text('Un Published'),
+                  ),
+                  Tab(
+                    child: Text('Published'),
+                  ),
+                ],
+              ),
             ),
             drawer: CustomDrawer(),
-            body: Center(
+            body: const Center(
               child: Text(
                 'Product List',
                 style: TextStyle(color: Colors.black),
