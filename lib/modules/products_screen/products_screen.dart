@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mv_vendor_app/layout/cubit/cubit.dart';
 import 'package:mv_vendor_app/layout/cubit/states.dart';
+import 'package:mv_vendor_app/widget/products_screen/published.dart';
+import 'package:mv_vendor_app/widget/products_screen/un_pulished.dart';
 
 import '../../widget/custom_drawer.dart';
 
@@ -39,12 +41,8 @@ class ProductsScreen extends StatelessWidget {
             drawer: CustomDrawer(),
             body: TabBarView(
               children: [
-                Center(
-                  child: Text('Un Pulished Products'),
-                ),
-                Center(
-                  child: Text('Pulished Products'),
-                ),
+                UnPublishedTab(),
+                PublishedTab(),
               ],
             ),
           ),

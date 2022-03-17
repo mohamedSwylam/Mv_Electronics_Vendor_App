@@ -19,7 +19,9 @@ class PublishedTab extends StatelessWidget {
             padding: const EdgeInsets.all(20.0),
             child: ListView(
               children: [
-
+                Center(
+                  child: Text('Pulished Products'),
+                ),
               ],
             ),
           );
