@@ -104,11 +104,5 @@ class Product {
     };
   }
 }
-productQuery(approved){
-  return FirebaseFirestore.instance.collection('products').where('approved',isEqualTo: approved)
-      .orderBy('productName')
-      .withConverter<Product>(
-      fromFirestore: (snapshot, _) => Product.fromJson(snapshot.data()!),
-      toFirestore: (product, _) =>product.toJson(),
-  );
+
 }
