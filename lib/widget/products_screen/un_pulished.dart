@@ -73,6 +73,8 @@ class UnPublishedTab extends StatelessWidget {
                                           color: Colors.red,
                                         ),
                                       ),
+                                      SizedBox(width: 10,),
+                                      Text(discount.toString()),
                                     ]),
                                 ],
                               ),
