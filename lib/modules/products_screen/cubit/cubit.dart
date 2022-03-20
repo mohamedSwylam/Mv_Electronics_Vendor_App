@@ -26,5 +26,9 @@ class ProductCubit extends Cubit<ProductStates> {
 
   static ProductCubit get(context) => BlocProvider.of(context);
   FirebaseService service = FirebaseService();
-
+  String formattedNumber (number){
+    var f = NumberFormat("#,##,##");
+        String formattedNumber= f.format (number);
+    return formattedNumber;
+  }
 }

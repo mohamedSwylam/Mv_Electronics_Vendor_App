@@ -58,14 +58,14 @@ class UnPublishedTab extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(product.productName!),
-                                  if (product.salesPrice != null)
                                     Row(children: [
-                                      Text(product.salesPrice.toString()),
+                                      if (product.salesPrice != null)
+                                        Text(cubit.formattedNumber(product.salesPrice)),
                                       SizedBox(
                                         width: 10,
                                       ),
                                       Text(
-                                        product.regularPrice.toString(),
+                                        cubit.formattedNumber(product.regularPrice),
                                         style: TextStyle(
                                           decoration: product.salesPrice != null
                                               ? TextDecoration.lineThrough
