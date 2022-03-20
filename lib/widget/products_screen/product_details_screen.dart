@@ -19,27 +19,10 @@ class PublishedTab extends StatelessWidget {
     return BlocConsumer<ProductCubit, ProductStates>(
         listener: (context, state) {},
         builder: (context, state) {
-          return FirestoreQueryBuilder<Product>(
-            query: productQuery(true),
-            builder: (context, snapshot, _) {
-              if (snapshot.isFetching) {
-                return const CircularProgressIndicator();
-              }
+          return ListView(
+            children: [
 
-              if (snapshot.hasError) {
-                return Text('Something went wrong! ${snapshot.error}');
-              }
-              if (snapshot.docs.isEmpty) {
-                return Center(
-                  child: Text('No Products Published yet'),
-                );
-              }
-              return ProductCard(
-                cubit: cubit,
-                service: service,
-                snapshot: snapshot,
-              );
-            },
+            ],
           );
         });
   }
