@@ -23,7 +23,7 @@ class PublishedTab extends StatelessWidget {
             query: productQuery(true),
             builder: (context, snapshot, _) {
               if (snapshot.isFetching) {
-                return const CircularProgressIndicator();
+                return Center(child: const CircularProgressIndicator());
               }
 
               if (snapshot.hasError) {
