@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mv_vendor_app/services/firebase_service.dart';
 
 class Product {
   final String? productName;
@@ -20,7 +21,7 @@ class Product {
   final int? reorderLevel;
   final bool? chargeShipping;
   final int? shippingCharge;
-  final List? sizeList;
+  final List? size;
   final List? imageUrls;
   final Map<String, dynamic>? seller;
   final double? taxPercentage;
@@ -43,7 +44,7 @@ class Product {
     this.reorderLevel,
     this.chargeShipping,
     this.shippingCharge,
-    this.sizeList,
+    this.size,
     this.imageUrls,
     this.approved,
     this.seller,
@@ -70,7 +71,7 @@ class Product {
     reorderLevel: json['reorderLevel'] ==null ? null :json['reorderLevel']! as int,
     chargeShipping: json['chargeShipping'] ==null ? null :json['chargeShipping']! as bool,
     shippingCharge: json['shippingCharge'] ==null ? null :json['shippingCharge']! as int,
-    sizeList: json['sizeList'] ==null ? null :json['sizeList']! as List,
+    size: json['size'] ==null ? null :json['size']! as List,
     imageUrls: json['imageUrls']! as List,
     seller: json['seller']! as Map<String, dynamic>,
     taxPercentage: json['taxPercentage']! as double,
@@ -97,15 +98,16 @@ class Product {
       'reorderLevel': reorderLevel,
       'chargeShipping': chargeShipping,
       'shippingCharge': shippingCharge,
-      'sizeList': sizeList,
+      'size': size,
       'imageUrls': imageUrls,
       'seller': seller,
       'taxPercentage': taxPercentage,
     };
   }
 }
+FirebaseService service =FirebaseService();
 productQuery(approved){
-  return FirebaseFirestore.instance.collection('products').where('approved',isEqualTo: approved)
+  return FirebaseFirestore.instance.collection('products').where('approved',isEqualTo: approved).where('seller.uid',isEqualTo: service.user!.uid)
       .orderBy('productName')
       .withConverter<Product>(
     fromFirestore: (snapshot, _) => Product.fromJson(snapshot.data()!),

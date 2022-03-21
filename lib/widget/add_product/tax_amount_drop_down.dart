@@ -13,7 +13,7 @@ class TaxAmountDropDown extends StatelessWidget {
         style: const TextStyle(color: Colors.deepPurple),
         onChanged: (value)=>cubit.dropDownTaxAmountButtonChange(value),
         hint: Text('Tax Amount',style: TextStyle(fontSize: 16),),
-        items: ['GST-10%', '6ST-12%']
+        items: ['GST-10%', 'GST-12%']
         .map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
