@@ -8,8 +8,10 @@ import 'package:mv_vendor_app/widget/products_screen/product_card.dart';
 import '../../../modules/add_products_screen/cubit/cubit.dart';
 import '../../../modules/add_products_screen/cubit/states.dart';
 import '../../../services/firebase_service.dart';
-import '../../modules/products_screen/cubit/cubit.dart';
-import '../../modules/products_screen/cubit/states.dart';
+import '../products_screen/cubit/cubit.dart';
+import '../products_screen/cubit/states.dart';
+import 'cubit/cubit.dart';
+import 'cubit/states.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final String? productId;
@@ -40,9 +42,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var cubit = ProductCubit.get(context);
+    var cubit = ProductDetailsCubit.get(context);
     FirebaseService service = FirebaseService();
-    return BlocConsumer<ProductCubit, ProductStates>(
+    return BlocConsumer<ProductDetailsCubit, ProductDetailsStates>(
         listener: (context, state) {},
         builder: (context, state) {
           return Scaffold(

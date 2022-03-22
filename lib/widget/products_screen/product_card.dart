@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutterfire_ui/firestore.dart';
-import 'package:mv_vendor_app/widget/products_screen/product_details_screen.dart';
+import 'package:mv_vendor_app/modules/product_details_screen/product_details_screen.dart';
 
 import '../../models/product_model.dart';
 import '../../modules/products_screen/cubit/cubit.dart';
