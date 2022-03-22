@@ -21,15 +21,19 @@ class ProductDetailsScreen extends StatefulWidget {
   @override
   State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
 }
+
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
-  var productName =TextEditingController();
+  var productName = TextEditingController();
+  var brand = TextEditingController();
 
   @override
   void initState() {
-    productName.text = widget.product!.productName! ;
+    productName.text = widget.product!.productName!;
+    brand.text = widget.product!.brand!;
 
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     var cubit = ProductCubit.get(context);
@@ -44,7 +48,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               title: Text(widget.product!.productName!),
             ),
             body: Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(18.0),
               child: ListView(
                 children: [
                   Container(
@@ -59,10 +63,26 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       }).toList(),
                     ),
                   ),
-                  SizedBox(height: 10,),
-              TextFormField(
-              controller:productName,
-            ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(children: [
+                    Text('Brand'),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      child: TextFormField(
+                        controller: brand,
+                      ),
+                    ),
+                  ]),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextFormField(
+                    controller: productName,
+                  ),
                 ],
               ),
             ),
