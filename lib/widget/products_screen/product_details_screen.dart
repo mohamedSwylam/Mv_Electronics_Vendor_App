@@ -11,13 +11,25 @@ import '../../../services/firebase_service.dart';
 import '../../modules/products_screen/cubit/cubit.dart';
 import '../../modules/products_screen/cubit/states.dart';
 
-class ProductDetailsScreen extends StatelessWidget {
+class ProductDetailsScreen extends StatefulWidget {
   final String? productId;
   final Product? product;
 
   const ProductDetailsScreen({this.product, this.productId, Key? key})
       : super(key: key);
 
+  @override
+  State<ProductDetailsScreen> createState() => _ProductDetailsScreenState();
+}
+class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+  var productName =TextEditingController();
+
+  @override
+  void initState() {
+    productName.text = widget.product!.productName! ;
+
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     var cubit = ProductCubit.get(context);
@@ -29,7 +41,7 @@ class ProductDetailsScreen extends StatelessWidget {
             backgroundColor: Colors.white,
             appBar: AppBar(
               elevation: 0,
-              title: Text(product!.productName!),
+              title: Text(widget.product!.productName!),
             ),
             body: Padding(
               padding: const EdgeInsets.all(10.0),
@@ -39,7 +51,7 @@ class ProductDetailsScreen extends StatelessWidget {
                     height: 200,
                     child: ListView(
                       scrollDirection: Axis.horizontal,
-                      children: product!.imageUrls!.map((e) {
+                      children: widget.product!.imageUrls!.map((e) {
                         return Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: CachedNetworkImage(imageUrl: e),
@@ -48,7 +60,9 @@ class ProductDetailsScreen extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 10,),
-                  Text(product!.productName!, style: TextStyle(fontSize: 20),),
+              TextFormField(
+              controller:productName,
+            ),
                 ],
               ),
             ),
