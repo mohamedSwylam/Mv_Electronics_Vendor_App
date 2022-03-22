@@ -25,11 +25,15 @@ class ProductDetailsScreen extends StatefulWidget {
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   var productName = TextEditingController();
   var brand = TextEditingController();
+  var salesPrice = TextEditingController();
+  var regularPrice = TextEditingController();
 
   @override
   void initState() {
     productName.text = widget.product!.productName!;
     brand.text = widget.product!.brand!;
+    salesPrice.text = widget.product!.salesPrice!.toString();
+    regularPrice.text = widget.product!.regularPrice!.toString();
 
     super.initState();
   }
@@ -67,7 +71,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     height: 10,
                   ),
                   Row(children: [
-                    Text('Brand'),
+                    Text(
+                      'Brand : ',
+                      style: TextStyle(color: Colors.grey),
+                    ),
                     SizedBox(
                       width: 10,
                     ),
@@ -83,6 +90,48 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   TextFormField(
                     controller: productName,
                   ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(children: [
+                    if (widget.product!.salesPrice != null)
+                      Expanded(
+                        child: Row(
+                          children: [
+                            Text(
+                              'Sales price : ',
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: TextFormField(
+                                controller: salesPrice,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Text(
+                            'Regular price : ',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            child: TextFormField(
+                              controller: regularPrice,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ]),
                 ],
               ),
             ),
