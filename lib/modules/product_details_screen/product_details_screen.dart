@@ -29,24 +29,26 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   var brand = TextEditingController();
   var salesPrice = TextEditingController();
   var regularPrice = TextEditingController();
-
+  String? taxStatus;
+  String? taxAmount;
   @override
   void initState() {
     productName.text = widget.product!.productName!;
     brand.text = widget.product!.brand!;
     salesPrice.text = widget.product!.salesPrice!.toString();
     regularPrice.text = widget.product!.regularPrice!.toString();
-
+    taxStatus=widget.product!.taxStatus!;
+    taxAmount=widget.product!.taxPercentage.toString();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    var cubit = ProductDetailsCubit.get(context);
     FirebaseService service = FirebaseService();
     return BlocConsumer<ProductDetailsCubit, ProductDetailsStates>(
         listener: (context, state) {},
         builder: (context, state) {
+          var cubit = ProductDetailsCubit.get(context);
           return Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
@@ -134,6 +136,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       ),
                     ),
                   ]),
+                  cubit.TaxStatusDropDown(),
                 ],
               ),
             ),

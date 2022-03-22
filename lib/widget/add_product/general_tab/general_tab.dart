@@ -168,11 +168,12 @@ class GeneralTab extends StatelessWidget {
                 SizedBox(
                   height: 30,
                 ),
-                TaxStatusDropDown(),
+                cubit.TaxStatusDropDown(),
                 Divider(
                   color: Colors.black,
                 ),
-                if (cubit.taxStatus == 'Taxable') TaxAmountDropDown(),
+                if (cubit.taxStatus == 'Taxable')
+                  cubit.TaxAmountDropDown(),
               ],
             ),
           );

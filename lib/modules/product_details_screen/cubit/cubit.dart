@@ -23,17 +23,61 @@ import 'package:path/path.dart';
 
 class ProductDetailsCubit extends Cubit<ProductDetailsStates> {
   ProductDetailsCubit() : super(ProductDetailsInitialState());
-
   static ProductDetailsCubit get(context) => BlocProvider.of(context);
   FirebaseService service = FirebaseService();
   String? taxStatus;
   String? taxAmount;
   void dropDownTaxStatusButtonChange(String? selectedStatus) {
     taxStatus = selectedStatus;
+
     emit(TaxStatusChangeSuccessState());
   }
   void dropDownTaxAmountButtonChange(String? selectedAmount) {
     taxAmount = selectedAmount;
     emit(TaxAmountChangeSuccessState());
+  }
+  Widget TaxStatusDropDown() {
+    return DropdownButtonFormField<String>(
+        value: taxStatus,
+        icon: const Icon(Icons.arrow_drop_down),
+        elevation: 16,
+        style: const TextStyle(color: Colors.deepPurple),
+        onChanged: (value)=>dropDownTaxStatusButtonChange(value),
+        hint: Text('Tax Status',style: TextStyle(fontSize: 16),),
+        items: ['Taxable', 'Not Taxable']
+            .map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        validator: (value){
+          if(value!.isEmpty) {
+            return 'Select Tax Status';
+          }
+        }
+    );
+  }
+  Widget TaxAmountDropDown (){
+    return DropdownButtonFormField<String>(
+        value: taxAmount,
+        icon: const Icon(Icons.arrow_drop_down),
+        elevation: 16,
+        style: const TextStyle(color: Colors.deepPurple),
+        onChanged: (value)=>dropDownTaxAmountButtonChange(value),
+        hint: Text('Tax Amount',style: TextStyle(fontSize: 16),),
+        items: ['GST-10%', 'GST-12%']
+            .map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        validator: (value){
+          if(value!.isEmpty) {
+            return 'Select Tax Amount';
+          }
+        }
+    );
   }
 }

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
@@ -152,7 +153,6 @@ class AddProductCubit extends Cubit<AddProductStates> {
 
   String? taxStatus;
   String? taxAmount;
-
   void dropDownTaxStatusButtonChange(String? selectedStatus) {
     taxStatus = selectedStatus;
     getFormData(
@@ -160,7 +160,6 @@ class AddProductCubit extends Cubit<AddProductStates> {
     );
     emit(OnTaxStatusChangeSuccessState());
   }
-
   void dropDownTaxAmountButtonChange(String? selectedAmount) {
     taxAmount = selectedAmount;
     getFormData(
@@ -168,6 +167,51 @@ class AddProductCubit extends Cubit<AddProductStates> {
     );
     emit(OnTaxAmountChangeSuccessState());
   }
+  Widget TaxStatusDropDown() {
+    return DropdownButtonFormField<String>(
+        value: taxStatus,
+        icon: const Icon(Icons.arrow_drop_down),
+        elevation: 16,
+        style: const TextStyle(color: Colors.deepPurple),
+        onChanged: (value)=>dropDownTaxStatusButtonChange(value),
+        hint: Text('Tax Status',style: TextStyle(fontSize: 16),),
+        items: ['Taxable', 'Not Taxable']
+            .map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        validator: (value){
+          if(value!.isEmpty) {
+            return 'Select Tax Status';
+          }
+        }
+    );
+  }
+  Widget TaxAmountDropDown (){
+    return DropdownButtonFormField<String>(
+        value: taxAmount,
+        icon: const Icon(Icons.arrow_drop_down),
+        elevation: 16,
+        style: const TextStyle(color: Colors.deepPurple),
+        onChanged: (value)=>dropDownTaxAmountButtonChange(value),
+        hint: Text('Tax Amount',style: TextStyle(fontSize: 16),),
+        items: ['GST-10%', 'GST-12%']
+            .map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+        validator: (value){
+          if(value!.isEmpty) {
+            return 'Select Tax Amount';
+          }
+        }
+    );
+  }
+
 
   String formattedDate(date) {
     var outputFormat = DateFormat('dd/MM/yyyy hh:mn aa');
