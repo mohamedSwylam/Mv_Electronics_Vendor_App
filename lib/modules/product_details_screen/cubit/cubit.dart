@@ -36,7 +36,7 @@ class ProductDetailsCubit extends Cubit<ProductDetailsStates> {
     taxAmount = selectedAmount;
     emit(TaxAmountChangeSuccessState());
   }
-  Widget TaxStatusDropDown() {
+  Widget taxStatusDropDown() {
     return DropdownButtonFormField<String>(
         value: taxStatus,
         icon: const Icon(Icons.arrow_drop_down),
@@ -58,7 +58,7 @@ class ProductDetailsCubit extends Cubit<ProductDetailsStates> {
         }
     );
   }
-  Widget TaxAmountDropDown (){
+  Widget taxAmountDropDown (){
     return DropdownButtonFormField<String>(
         value: taxAmount,
         icon: const Icon(Icons.arrow_drop_down),

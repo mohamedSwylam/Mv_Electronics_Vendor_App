@@ -31,14 +31,18 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   var regularPrice = TextEditingController();
   String? taxStatus;
   String? taxAmount;
+
   @override
   void initState() {
-    productName.text = widget.product!.productName!;
-    brand.text = widget.product!.brand!;
-    salesPrice.text = widget.product!.salesPrice!.toString();
-    regularPrice.text = widget.product!.regularPrice!.toString();
-    taxStatus=widget.product!.taxStatus!;
-    taxAmount=widget.product!.taxPercentage.toString();
+    setState(() {
+      productName.text = widget.product!.productName!;
+      brand.text = widget.product!.brand!;
+      salesPrice.text = widget.product!.salesPrice!.toString();
+      regularPrice.text = widget.product!.regularPrice!.toString();
+      taxStatus = widget.product!.taxStatus!;
+      taxAmount = widget.product!.taxPercentage == 10 ? 'GST-10%' : 'GST-12%';
+    });
+
     super.initState();
   }
 
@@ -106,9 +110,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               'Sales price : ',
                               style: TextStyle(color: Colors.grey),
                             ),
-                            SizedBox(
-                              width: 10,
-                            ),
                             Expanded(
                               child: TextFormField(
                                 controller: salesPrice,
@@ -136,7 +137,30 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       ),
                     ),
                   ]),
-                  cubit.TaxStatusDropDown(),
+                  Row(
+                    children: [
+                      Expanded(child: cubit.taxStatusDropDown()),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      if (cubit.taxStatus == 'Taxable')
+                        Expanded(child: cubit.taxAmountDropDown()),
+                    ],
+                  ),
+                  Row(children: [
+                    Text(
+                      'Category: ',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    Text(widget.product!.category!),
+                  ]),
+                  Row(children: [
+                    Text(
+                      'Main Category: ',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    Text(widget.product!.category!),
+                  ]),
                 ],
               ),
             ),
