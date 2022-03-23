@@ -27,11 +27,12 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
-  var productName = TextEditingController();
-  var brand = TextEditingController();
-  var salesPrice = TextEditingController();
-  var regularPrice = TextEditingController();
-  var description = TextEditingController();
+  final productName = TextEditingController();
+  final brand = TextEditingController();
+  final salesPrice = TextEditingController();
+  final regularPrice = TextEditingController();
+  final description = TextEditingController();
+  final soh = TextEditingController();
   String? taxStatus;
   String? taxAmount;
 
@@ -43,6 +44,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       brand.text = widget.product!.brand!;
       salesPrice.text = widget.product!.salesPrice!.toString();
       regularPrice.text = widget.product!.regularPrice!.toString();
+      soh.text = widget.product!.soh!.toString();
       taxStatus = widget.product!.taxStatus!;
       taxAmount = widget.product!.taxPercentage == 10 ? 'GST-10%' : 'GST-12%';
     });
@@ -124,7 +126,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               style: TextStyle(color: Colors.grey),
                             ),
                             Expanded(
-                              child:CustomTextFormField(
+                              child: CustomTextFormField(
                                 controller: salesPrice,
                                 inputType: TextInputType.number,
                               ),
@@ -203,6 +205,33 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           width: 10,
                         ),
                         Text(widget.product!.subCategory!),
+                      ]),
+                    ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10.0, top: 20.0),
+                    child: Row(children: [
+                      Text(
+                        'SKU: ',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(widget.product!.sku!),
+                    ]),
+                  ),
+                  if (widget.product!.manageInventory == true)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 10),
+                      child: Row(children: [
+                        Text(
+                          'SOH',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                        CustomTextFormField(
+                          controller: soh,
+                          inputType: TextInputType.number,
+                        ),
                       ]),
                     ),
                 ],
