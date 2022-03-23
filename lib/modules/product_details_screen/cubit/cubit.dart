@@ -80,4 +80,9 @@ class ProductDetailsCubit extends Cubit<ProductDetailsStates> {
         }
     );
   }
+  bool editable =true;
+  changeToEdit(){
+    editable=false;
+    emit(ChangeToEditSuccessState());
+  }
 }

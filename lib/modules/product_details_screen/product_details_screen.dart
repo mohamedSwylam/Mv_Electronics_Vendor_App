@@ -27,7 +27,7 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
-  final formKey= GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   final productName = TextEditingController();
   final brand = TextEditingController();
   final salesPrice = TextEditingController();
@@ -71,215 +71,38 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               appBar: AppBar(
                 elevation: 0,
                 title: Text(widget.product!.productName!),
+                actions: [
+                  IconButton(icon: Icon(Icons.edit_outlined), onPressed: () {
+                    cubit.changeToEdit();
+                  }),
+                ],
               ),
               body: Padding(
                 padding: const EdgeInsets.all(18.0),
                 child: ListView(
                   children: [
-                    Container(
-                      height: 200,
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children: widget.product!.imageUrls!.map((e) {
-                          return Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: CachedNetworkImage(imageUrl: e),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(children: [
-                      Text(
-                        'Brand : ',
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: CustomTextFormField(
-                          controller: brand,
-                          inputType: TextInputType.text,
-                        ),
-                      ),
-                    ]),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    CustomTextFormField(
-                      controller: productName,
-                      inputType: TextInputType.text,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    CustomTextFormField(
-                      controller: description,
-                      inputType: TextInputType.text,
-                    ),
-                    Padding(
-                        padding: const EdgeInsets.only(top:10 , bottom: 10),
-                        child: Row(
-                            children: [
-                        Text('Unit :'),
-                        Text(widget.product!.unit!),
-                        ],)
-                    ), // Row
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(children: [
-                      if (widget.product!.salesPrice != null)
-                        Expanded(
-                          child: Row(
-                            children: [
-                              Text(
-                                'Sales price : ',
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                              Expanded(
-                                child: CustomTextFormField(
-                                  controller: salesPrice,
-                                  inputType: TextInputType.number,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      Expanded(
-                        child: Row(
-                          children: [
-                            Text(
-                              'Regular price : ',
-                              style: TextStyle(color: Colors.grey),
+                    AbsorbPointer(
+                      absorbing: cubit.editable,
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 200,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              children: widget.product!.imageUrls!.map((e) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: CachedNetworkImage(imageUrl: e),
+                                );
+                              }).toList(),
                             ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Expanded(
-                              child: CustomTextFormField(
-                                controller: regularPrice,
-                                inputType: TextInputType.number,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ]),
-                    Row(
-                      children: [
-                        Expanded(child: cubit.taxStatusDropDown()),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        if (cubit.taxStatus == 'Taxable')
-                          Expanded(child: cubit.taxAmountDropDown()),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10.0, top: 20.0),
-                      child: Row(children: [
-                        Text(
-                          'Category: ',
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(widget.product!.category!),
-                      ]),
-                    ),
-                    if (widget.product!.mainCategory != null)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 10.0, top: 20.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              'Main Category: ',
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(widget.product!.mainCategory!),
-                          ],
-                        ),
-                      ),
-                    if (widget.product!.subCategory != null)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 10.0, top: 20.0),
-                        child: Row(children: [
-                          Text(
-                            'Sub Category: ',
-                            style: TextStyle(color: Colors.grey),
                           ),
                           SizedBox(
-                            width: 10,
+                            height: 10,
                           ),
-                          Text(widget.product!.subCategory!),
-                        ]),
-                      ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 10.0, top: 20.0),
-                      child: Row(children: [
-                        Text(
-                          'SKU: ',
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(widget.product!.sku!),
-                      ]),
-                    ),
-                 if (widget.product!.manageInventory == true)
-                   Row(children: [
-                       Expanded(
-                         child: Row(
-                           children: [
-                             Text(
-                               'SOH : ',
-                               style: TextStyle(color: Colors.grey),
-                             ),
-                             Expanded(
-                               child: CustomTextFormField(
-                                 controller: soh,
-                                 inputType: TextInputType.number,
-                               ),
-                             ),
-                           ],
-                         ),
-                       ),
-                     Expanded(
-                       child: Row(
-                         children: [
-                           Text(
-                             'Re-Order Level : ',
-                             style: TextStyle(color: Colors.grey),
-                           ),
-                           SizedBox(
-                             width: 10,
-                           ),
-                           Expanded(
-                             child: CustomTextFormField(
-                               controller: reOrderLevel,
-                               inputType: TextInputType.number,
-                             ),
-                           ),
-                         ],
-                       ),
-                     ),
-                   ]),
-                    if (widget.product!.chargeShipping == true)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 10.0, top: 20.0),
-                        child: Row(
-                          children: [
+                          Row(children: [
                             Text(
-                              'Shipping Charge : ',
+                              'Brand : ',
                               style: TextStyle(color: Colors.grey),
                             ),
                             SizedBox(
@@ -287,13 +110,208 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             ),
                             Expanded(
                               child: CustomTextFormField(
-                                inputType: TextInputType.number,
-                                controller: shippingCharge,
+                                controller: brand,
+                                inputType: TextInputType.text,
                               ),
                             ),
-                          ],
-                        ),
+                          ]),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          CustomTextFormField(
+                            controller: productName,
+                            inputType: TextInputType.text,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          CustomTextFormField(
+                            controller: description,
+                            inputType: TextInputType.text,
+                          ),
+                          Padding(
+                              padding:
+                                  const EdgeInsets.only(top: 10, bottom: 10),
+                              child: Row(
+                                children: [
+                                  Text('Unit :'),
+                                  Text(widget.product!.unit!),
+                                ],
+                              )), // Row
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(children: [
+                            if (widget.product!.salesPrice != null)
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Sales price : ',
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
+                                    Expanded(
+                                      child: CustomTextFormField(
+                                        controller: salesPrice,
+                                        inputType: TextInputType.number,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'Regular price : ',
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Expanded(
+                                    child: CustomTextFormField(
+                                      controller: regularPrice,
+                                      inputType: TextInputType.number,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ]),
+                          Row(
+                            children: [
+                              Expanded(child: cubit.taxStatusDropDown()),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              if (cubit.taxStatus == 'Taxable')
+                                Expanded(child: cubit.taxAmountDropDown()),
+                            ],
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(bottom: 10.0, top: 20.0),
+                            child: Row(children: [
+                              Text(
+                                'Category: ',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(widget.product!.category!),
+                            ]),
+                          ),
+                          if (widget.product!.mainCategory != null)
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  bottom: 10.0, top: 20.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'Main Category: ',
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(widget.product!.mainCategory!),
+                                ],
+                              ),
+                            ),
+                          if (widget.product!.subCategory != null)
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  bottom: 10.0, top: 20.0),
+                              child: Row(children: [
+                                Text(
+                                  'Sub Category: ',
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(widget.product!.subCategory!),
+                              ]),
+                            ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(bottom: 10.0, top: 20.0),
+                            child: Row(children: [
+                              Text(
+                                'SKU: ',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(widget.product!.sku!),
+                            ]),
+                          ),
+                          if (widget.product!.manageInventory == true)
+                            Row(children: [
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'SOH : ',
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
+                                    Expanded(
+                                      child: CustomTextFormField(
+                                        controller: soh,
+                                        inputType: TextInputType.number,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Re-Order Level : ',
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Expanded(
+                                      child: CustomTextFormField(
+                                        controller: reOrderLevel,
+                                        inputType: TextInputType.number,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ]),
+                          if (widget.product!.chargeShipping == true)
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  bottom: 10.0, top: 20.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'Shipping Charge : ',
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Expanded(
+                                    child: CustomTextFormField(
+                                      inputType: TextInputType.number,
+                                      controller: shippingCharge,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                        ],
                       ),
+                    ),
                   ],
                 ),
               ),
