@@ -34,6 +34,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   final description = TextEditingController();
   final soh = TextEditingController();
   final reOrderLevel = TextEditingController();
+  final shippingCharge = TextEditingController();
   String? taxStatus;
   String? taxAmount;
 
@@ -46,6 +47,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       salesPrice.text = widget.product!.salesPrice!.toString();
       regularPrice.text = widget.product!.regularPrice!.toString();
       soh.text = widget.product!.soh!.toString();
+      shippingCharge.text = widget.product!.shippingCharge!.toString();
       reOrderLevel.text = widget.product!.reorderLevel!.toString();
       taxStatus = widget.product!.taxStatus!;
       taxAmount = widget.product!.taxPercentage == 10 ? 'GST-10%' : 'GST-12%';
@@ -115,6 +117,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     controller: description,
                     inputType: TextInputType.text,
                   ),
+                  Padding(
+                      padding: const EdgeInsets.only(top:10 , bottom: 10),
+                      child: Row(
+                          children: [
+                      Text('Unit :'),
+                      Text(widget.product!.unit!),
+                      ],)
+                  ), // Row
                   SizedBox(
                     height: 10,
                   ),
@@ -222,12 +232,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       Text(widget.product!.sku!),
                     ]),
                   ),
-                  if (widget.product!.manageInventory == true)
-                   Column(
-                     children: [
-                       Padding(
-                         padding: const EdgeInsets.only(top: 10, bottom: 10),
-                         child: Row(children: [
+               if (widget.product!.manageInventory == true)
+                 Row(children: [
+                     Expanded(
+                       child: Row(
+                         children: [
                            Text(
                              'SOH : ',
                              style: TextStyle(color: Colors.grey),
@@ -238,25 +247,48 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                inputType: TextInputType.number,
                              ),
                            ),
-                         ]),
+                         ],
                        ),
-                       Padding(
-                         padding: const EdgeInsets.only(top: 10, bottom: 10),
-                         child: Row(children: [
-                           Text(
-                             'Re-Order Level : ',
-                             style: TextStyle(color: Colors.grey),
+                     ),
+                   Expanded(
+                     child: Row(
+                       children: [
+                         Text(
+                           'Re-Order Level : ',
+                           style: TextStyle(color: Colors.grey),
+                         ),
+                         SizedBox(
+                           width: 10,
+                         ),
+                         Expanded(
+                           child: CustomTextFormField(
+                             controller: reOrderLevel,
+                             inputType: TextInputType.number,
                            ),
-                           Expanded(
-                             child: CustomTextFormField(
-                               controller: reOrderLevel,
-                               inputType: TextInputType.number,
-                             ),
-                           ),
-                         ]),
-                       ),
-                     ],
+                         ),
+                       ],
+                     ),
                    ),
+                 ]),
+                  if (widget.product!.chargeShipping == true)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10.0, top: 20.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Shipping Charge : ',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          CustomTextFormField(
+                            inputType: TextInputType.number,
+                            controller: shippingCharge,
+                          ),
+                        ],
+                      ),
+                    ),
                 ],
               ),
             ),
