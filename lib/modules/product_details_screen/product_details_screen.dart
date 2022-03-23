@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutterfire_ui/firestore.dart';
 import 'package:mv_vendor_app/models/product_model.dart';
+import 'package:mv_vendor_app/shared/components/custom_text_field.dart';
 import 'package:mv_vendor_app/widget/products_screen/product_card.dart';
 import '../../../modules/add_products_screen/cubit/cubit.dart';
 import '../../../modules/add_products_screen/cubit/states.dart';
@@ -29,6 +31,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   var brand = TextEditingController();
   var salesPrice = TextEditingController();
   var regularPrice = TextEditingController();
+  var description = TextEditingController();
   String? taxStatus;
   String? taxAmount;
 
@@ -36,6 +39,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   void initState() {
     setState(() {
       productName.text = widget.product!.productName!;
+      description.text = widget.product!.description!;
       brand.text = widget.product!.brand!;
       salesPrice.text = widget.product!.salesPrice!.toString();
       regularPrice.text = widget.product!.regularPrice!.toString();
@@ -87,16 +91,25 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       width: 10,
                     ),
                     Expanded(
-                      child: TextFormField(
+                      child: CustomTextFormField(
                         controller: brand,
+                        inputType: TextInputType.text,
                       ),
                     ),
                   ]),
                   SizedBox(
                     height: 10,
                   ),
-                  TextFormField(
+                  CustomTextFormField(
                     controller: productName,
+                    inputType: TextInputType.text,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  CustomTextFormField(
+                    controller: description,
+                    inputType: TextInputType.text,
                   ),
                   SizedBox(
                     height: 10,
@@ -111,8 +124,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               style: TextStyle(color: Colors.grey),
                             ),
                             Expanded(
-                              child: TextFormField(
+                              child:CustomTextFormField(
                                 controller: salesPrice,
+                                inputType: TextInputType.number,
                               ),
                             ),
                           ],
@@ -129,8 +143,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             width: 10,
                           ),
                           Expanded(
-                            child: TextFormField(
+                            child: CustomTextFormField(
                               controller: regularPrice,
+                              inputType: TextInputType.number,
                             ),
                           ),
                         ],
@@ -147,20 +162,49 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         Expanded(child: cubit.taxAmountDropDown()),
                     ],
                   ),
-                  Row(children: [
-                    Text(
-                      'Category: ',
-                      style: TextStyle(color: Colors.grey),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10.0, top: 20.0),
+                    child: Row(children: [
+                      Text(
+                        'Category: ',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Text(widget.product!.category!),
+                    ]),
+                  ),
+                  if (widget.product!.mainCategory != null)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10.0, top: 20.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            'Main Category: ',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(widget.product!.mainCategory!),
+                        ],
+                      ),
                     ),
-                    Text(widget.product!.category!),
-                  ]),
-                  Row(children: [
-                    Text(
-                      'Main Category: ',
-                      style: TextStyle(color: Colors.grey),
+                  if (widget.product!.subCategory != null)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 10.0, top: 20.0),
+                      child: Row(children: [
+                        Text(
+                          'Sub Category: ',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Text(widget.product!.subCategory!),
+                      ]),
                     ),
-                    Text(widget.product!.category!),
-                  ]),
                 ],
               ),
             ),
