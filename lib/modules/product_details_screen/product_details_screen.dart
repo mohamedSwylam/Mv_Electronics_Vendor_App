@@ -33,6 +33,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   final regularPrice = TextEditingController();
   final description = TextEditingController();
   final soh = TextEditingController();
+  final reOrderLevel = TextEditingController();
   String? taxStatus;
   String? taxAmount;
 
@@ -45,6 +46,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       salesPrice.text = widget.product!.salesPrice!.toString();
       regularPrice.text = widget.product!.regularPrice!.toString();
       soh.text = widget.product!.soh!.toString();
+      reOrderLevel.text = widget.product!.reorderLevel!.toString();
       taxStatus = widget.product!.taxStatus!;
       taxAmount = widget.product!.taxPercentage == 10 ? 'GST-10%' : 'GST-12%';
     });
@@ -221,19 +223,40 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     ]),
                   ),
                   if (widget.product!.manageInventory == true)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 10, bottom: 10),
-                      child: Row(children: [
-                        Text(
-                          'SOH',
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        CustomTextFormField(
-                          controller: soh,
-                          inputType: TextInputType.number,
-                        ),
-                      ]),
-                    ),
+                   Column(
+                     children: [
+                       Padding(
+                         padding: const EdgeInsets.only(top: 10, bottom: 10),
+                         child: Row(children: [
+                           Text(
+                             'SOH : ',
+                             style: TextStyle(color: Colors.grey),
+                           ),
+                           Expanded(
+                             child: CustomTextFormField(
+                               controller: soh,
+                               inputType: TextInputType.number,
+                             ),
+                           ),
+                         ]),
+                       ),
+                       Padding(
+                         padding: const EdgeInsets.only(top: 10, bottom: 10),
+                         child: Row(children: [
+                           Text(
+                             'Re-Order Level : ',
+                             style: TextStyle(color: Colors.grey),
+                           ),
+                           Expanded(
+                             child: CustomTextFormField(
+                               controller: reOrderLevel,
+                               inputType: TextInputType.number,
+                             ),
+                           ),
+                         ]),
+                       ),
+                     ],
+                   ),
                 ],
               ),
             ),
