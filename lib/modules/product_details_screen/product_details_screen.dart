@@ -53,8 +53,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       reOrderLevel.text = widget.product!.reorderLevel!.toString();
       taxStatus = widget.product!.taxStatus!;
       taxAmount = widget.product!.taxPercentage == 10 ? 'GST-10%' : 'GST-12%';
-      if(widget.product!.scheduleDate!=null){
-        scheduleDate = DateTime.fromMicrosecondsSinceEpoch(widget.product!.scheduleDate!.microsecondsSinceEpoch);
+      if (widget.product!.scheduleDate != null) {
+        scheduleDate = DateTime.fromMicrosecondsSinceEpoch(
+            widget.product!.scheduleDate!.microsecondsSinceEpoch);
       }
     });
 
@@ -83,17 +84,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             cubit.changeToEdit();
                           })
                       : Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextButton(
-                            style: ButtonStyle(
-                              backgroundColor:
-                                  MaterialStateProperty.all(Colors.amber),
-                            ),
-                            child: Text("Save"),
-                            onPressed: () {
-                              cubit.changeToSave();
-                            }),
-                      ),
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextButton(
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all(Colors.amber),
+                              ),
+                              child: Text("Save"),
+                              onPressed: () {
+                                cubit.changeToSave();
+                              }),
+                        ),
                 ],
               ),
               body: Padding(
@@ -161,7 +162,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             height: 10,
                           ),
                           Container(
-                            color:Colors.grey.shade400,
+                            color: Colors.grey.shade400,
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Column(
@@ -173,7 +174,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                           children: [
                                             Text(
                                               'Sales price : ',
-                                              style: TextStyle(color: Colors.grey),
+                                              style:
+                                                  TextStyle(color: Colors.grey),
                                             ),
                                             Expanded(
                                               child: CustomTextFormField(
@@ -189,7 +191,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                         children: [
                                           Text(
                                             'Regular price : ',
-                                            style: TextStyle(color: Colors.grey),
+                                            style:
+                                                TextStyle(color: Colors.grey),
                                           ),
                                           SizedBox(
                                             width: 10,
@@ -204,6 +207,18 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       ),
                                     ),
                                   ]),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  if (scheduleDate != null)
+                                    Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Text('Sales price until :'),
+                                          Text(AddProductCubit.get(context).formattedDate(
+                                              scheduleDate)),
+                                        ]),
                                 ],
                               ),
                             ),
