@@ -85,4 +85,8 @@ class ProductDetailsCubit extends Cubit<ProductDetailsStates> {
     editable=false;
     emit(ChangeToEditSuccessState());
   }
+  changeToSave(){
+    editable=true;
+    emit(ChangeToEditSuccessState());
+  }
 }

@@ -36,6 +36,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   final soh = TextEditingController();
   final reOrderLevel = TextEditingController();
   final shippingCharge = TextEditingController();
+  DateTime? scheduleDate;
   String? taxStatus;
   String? taxAmount;
 
@@ -52,6 +53,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       reOrderLevel.text = widget.product!.reorderLevel!.toString();
       taxStatus = widget.product!.taxStatus!;
       taxAmount = widget.product!.taxPercentage == 10 ? 'GST-10%' : 'GST-12%';
+      if(widget.product!.scheduleDate!=null){
+        scheduleDate = DateTime.fromMicrosecondsSinceEpoch(widget.product!.scheduleDate!.microsecondsSinceEpoch);
+      }
     });
 
     super.initState();
@@ -72,9 +76,24 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 elevation: 0,
                 title: Text(widget.product!.productName!),
                 actions: [
-                  IconButton(icon: Icon(Icons.edit_outlined), onPressed: () {
-                    cubit.changeToEdit();
-                  }),
+                  cubit.editable
+                      ? IconButton(
+                          icon: Icon(Icons.edit_outlined),
+                          onPressed: () {
+                            cubit.changeToEdit();
+                          })
+                      : Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextButton(
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.amber),
+                            ),
+                            child: Text("Save"),
+                            onPressed: () {
+                              cubit.changeToSave();
+                            }),
+                      ),
                 ],
               ),
               body: Padding(
@@ -141,44 +160,54 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           SizedBox(
                             height: 10,
                           ),
-                          Row(children: [
-                            if (widget.product!.salesPrice != null)
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      'Sales price : ',
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
+                          Container(
+                            color:Colors.grey.shade400,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  Row(children: [
+                                    if (widget.product!.salesPrice != null)
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              'Sales price : ',
+                                              style: TextStyle(color: Colors.grey),
+                                            ),
+                                            Expanded(
+                                              child: CustomTextFormField(
+                                                controller: salesPrice,
+                                                inputType: TextInputType.number,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     Expanded(
-                                      child: CustomTextFormField(
-                                        controller: salesPrice,
-                                        inputType: TextInputType.number,
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            'Regular price : ',
+                                            style: TextStyle(color: Colors.grey),
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Expanded(
+                                            child: CustomTextFormField(
+                                              controller: regularPrice,
+                                              inputType: TextInputType.number,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                            Expanded(
-                              child: Row(
-                                children: [
-                                  Text(
-                                    'Regular price : ',
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Expanded(
-                                    child: CustomTextFormField(
-                                      controller: regularPrice,
-                                      inputType: TextInputType.number,
-                                    ),
-                                  ),
+                                  ]),
                                 ],
                               ),
                             ),
-                          ]),
+                          ),
                           Row(
                             children: [
                               Expanded(child: cubit.taxStatusDropDown()),
