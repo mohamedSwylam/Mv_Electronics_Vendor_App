@@ -40,6 +40,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   String? taxStatus;
   String? taxAmount;
   bool? manageInventory;
+  bool? chargeShipping;
 
   @override
   void initState() {
@@ -59,6 +60,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             widget.product!.scheduleDate!.microsecondsSinceEpoch);
       }
       manageInventory = widget.product!.manageInventory;
+      chargeShipping = widget.product!.chargeShipping;
     });
 
     super.initState();
@@ -305,20 +307,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                 Text(widget.product!.subCategory!),
                               ]),
                             ),
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(bottom: 10.0, top: 20.0),
-                            child: Row(children: [
-                              Text(
-                                'SKU: ',
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(widget.product!.sku!),
-                            ]),
-                          ),
                           if (widget.product!.manageInventory == true)
                             Container(
                               color: Colors.grey.shade300,
@@ -333,74 +321,116 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                         onChanged: (value) {
                                           setState(() {
                                             manageInventory = value;
+                                            if (value == false) {
+                                              soh.clear();
+                                              reOrderLevel.clear();
+                                            }
                                           });
                                         }),
-                                    if(manageInventory==true)
+                                    if (manageInventory == true)
                                       Row(children: [
-                                      Expanded(
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              'SOH : ',
-                                              style:
-                                                  TextStyle(color: Colors.grey),
-                                            ),
-                                            Expanded(
-                                              child: CustomTextFormField(
-                                                controller: soh,
-                                                inputType: TextInputType.number,
+                                        Expanded(
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                'SOH : ',
+                                                style: TextStyle(
+                                                    color: Colors.grey),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              'Re-Order Level : ',
-                                              style:
-                                                  TextStyle(color: Colors.grey),
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Expanded(
-                                              child: CustomTextFormField(
-                                                controller: reOrderLevel,
-                                                inputType: TextInputType.number,
+                                              Expanded(
+                                                child: CustomTextFormField(
+                                                  controller: soh,
+                                                  inputType:
+                                                      TextInputType.number,
+                                                ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    ]),
+                                        Expanded(
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                'Re-Order Level : ',
+                                                style: TextStyle(
+                                                    color: Colors.grey),
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Expanded(
+                                                child: CustomTextFormField(
+                                                  controller: reOrderLevel,
+                                                  inputType:
+                                                      TextInputType.number,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ]),
                                   ],
                                 ),
                               ),
                             ),
-                          if (widget.product!.chargeShipping == true)
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  bottom: 10.0, top: 20.0),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    'Shipping Charge : ',
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Expanded(
-                                    child: CustomTextFormField(
-                                      inputType: TextInputType.number,
-                                      controller: shippingCharge,
+                          SizedBox(
+                            height: 10,
+                          ),
+                            Container(
+                              color: Colors.grey.shade300,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  children: [
+                                    CheckboxListTile(
+                                        contentPadding: EdgeInsets.zero,
+                                        title: Text('Charge Shipping ?'),
+                                        value: chargeShipping,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            chargeShipping = value;
+                                            if (value == false) {
+                                              shippingCharge.clear();
+                                            }
+                                          });
+                                        }),
+                                    if (chargeShipping == true)
+                                      Row(
+                                      children: [
+                                        Text(
+                                          'Shipping Charge : ',
+                                          style: TextStyle(color: Colors.grey),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Expanded(
+                                          child: CustomTextFormField(
+                                            inputType: TextInputType.number,
+                                            controller: shippingCharge,
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
+                          Padding(
+                            padding:
+                            const EdgeInsets.only(bottom: 10.0, top: 20.0),
+                            child: Row(children: [
+                              Text(
+                                'SKU: ',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(widget.product!.sku!),
+                            ]),
+                          ),
+
                         ],
                       ),
                     ),
