@@ -39,6 +39,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   DateTime? scheduleDate;
   String? taxStatus;
   String? taxAmount;
+  bool? manageInventory;
 
   @override
   void initState() {
@@ -57,6 +58,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         scheduleDate = DateTime.fromMicrosecondsSinceEpoch(
             widget.product!.scheduleDate!.microsecondsSinceEpoch);
       }
+      manageInventory = widget.product!.manageInventory;
     });
 
     super.initState();
@@ -211,26 +213,38 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     height: 10,
                                   ),
                                   if (scheduleDate != null)
-                                Column(
-                                  children: [
-                                    Row(
-                                        mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          const Text('Sales price until :'),
-                                          Text(AddProductCubit.get(context)
-                                              .formattedDate(scheduleDate)),
-                                        ]),
-                                    SizedBox(
-                                      height: 10,
+                                    Column(
+                                      children: [
+                                        Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              const Text('Sales price until :'),
+                                              Text(AddProductCubit.get(context)
+                                                  .formattedDate(scheduleDate)),
+                                            ]),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        if (cubit.editable == false)
+                                          ElevatedButton(
+                                            child: Text('Change date'),
+                                            onPressed: () {
+                                              showDatePicker(
+                                                      context: context,
+                                                      initialDate:
+                                                          scheduleDate!,
+                                                      firstDate: DateTime.now(),
+                                                      lastDate: DateTime(5000))
+                                                  .then((value) {
+                                                setState(() {
+                                                  scheduleDate = value;
+                                                });
+                                              });
+                                            },
+                                          ),
+                                      ],
                                     ),
-                                    if(cubit.editable==false)
-                                      ElevatedButton(
-                                      child: Text('Change date'),
-                                      onPressed: () {},
-                                    ),
-                                  ],
-                                ),
                                 ],
                               ),
                             ),
@@ -306,43 +320,65 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             ]),
                           ),
                           if (widget.product!.manageInventory == true)
-                            Row(children: [
-                              Expanded(
-                                child: Row(
+                            Container(
+                              color: Colors.grey.shade300,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
                                   children: [
-                                    Text(
-                                      'SOH : ',
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
-                                    Expanded(
-                                      child: CustomTextFormField(
-                                        controller: soh,
-                                        inputType: TextInputType.number,
+                                    CheckboxListTile(
+                                        contentPadding: EdgeInsets.zero,
+                                        title: Text('Manage inventory ?'),
+                                        value: manageInventory,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            manageInventory = value;
+                                          });
+                                        }),
+                                    if(manageInventory==true)
+                                      Row(children: [
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              'SOH : ',
+                                              style:
+                                                  TextStyle(color: Colors.grey),
+                                            ),
+                                            Expanded(
+                                              child: CustomTextFormField(
+                                                controller: soh,
+                                                inputType: TextInputType.number,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
+                                      Expanded(
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              'Re-Order Level : ',
+                                              style:
+                                                  TextStyle(color: Colors.grey),
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Expanded(
+                                              child: CustomTextFormField(
+                                                controller: reOrderLevel,
+                                                inputType: TextInputType.number,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ]),
                                   ],
                                 ),
                               ),
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      'Re-Order Level : ',
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Expanded(
-                                      child: CustomTextFormField(
-                                        controller: reOrderLevel,
-                                        inputType: TextInputType.number,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ]),
+                            ),
                           if (widget.product!.chargeShipping == true)
                             Padding(
                               padding: const EdgeInsets.only(
