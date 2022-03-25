@@ -221,7 +221,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                           Text(AddProductCubit.get(context)
                                               .formattedDate(scheduleDate)),
                                         ]),
-                                    ElevatedButton(
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    if(cubit.editable==false)
+                                      ElevatedButton(
                                       child: Text('Change date'),
                                       onPressed: () {},
                                     ),
