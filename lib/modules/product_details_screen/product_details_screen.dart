@@ -211,14 +211,22 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     height: 10,
                                   ),
                                   if (scheduleDate != null)
+                                Column(
+                                  children: [
                                     Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                         children: [
                                           const Text('Sales price until :'),
-                                          Text(AddProductCubit.get(context).formattedDate(
-                                              scheduleDate)),
+                                          Text(AddProductCubit.get(context)
+                                              .formattedDate(scheduleDate)),
                                         ]),
+                                    ElevatedButton(
+                                      child: Text('Change date'),
+                                      onPressed: () {},
+                                    ),
+                                  ],
+                                ),
                                 ],
                               ),
                             ),
