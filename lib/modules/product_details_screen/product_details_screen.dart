@@ -36,17 +36,22 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   final soh = TextEditingController();
   final reOrderLevel = TextEditingController();
   final shippingCharge = TextEditingController();
+  final otherDetails = TextEditingController();
+  final sizeText = TextEditingController();
   DateTime? scheduleDate;
   String? taxStatus;
   String? taxAmount;
   bool? manageInventory;
   bool? chargeShipping;
+  bool? addList;
+  List sizeList = [];
 
   @override
   void initState() {
     setState(() {
       productName.text = widget.product!.productName!;
       description.text = widget.product!.description!;
+      otherDetails.text = widget.product!.otherDetails!;
       brand.text = widget.product!.brand!;
       salesPrice.text = widget.product!.salesPrice!.toString();
       regularPrice.text = widget.product!.regularPrice!.toString();
@@ -58,6 +63,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       if (widget.product!.scheduleDate != null) {
         scheduleDate = DateTime.fromMicrosecondsSinceEpoch(
             widget.product!.scheduleDate!.microsecondsSinceEpoch);
+      }
+      if (widget.product!.size!.isNotEmpty) {
+        sizeList = widget.product!.size!;
       }
       manageInventory = widget.product!.manageInventory;
       chargeShipping = widget.product!.chargeShipping;
@@ -153,6 +161,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             controller: description,
                             inputType: TextInputType.text,
                           ),
+                          CustomTextFormField(
+                            controller: otherDetails,
+                            inputType: TextInputType.text,
+                          ),
                           Padding(
                               padding:
                                   const EdgeInsets.only(top: 10, bottom: 10),
@@ -161,7 +173,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   Text('Unit :'),
                                   Text(widget.product!.unit!),
                                 ],
-                              )), // Row
+                              )),
+                          // Row
                           SizedBox(
                             height: 10,
                           ),
@@ -251,6 +264,80 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               ),
                             ),
                           ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            color: Colors.grey.shade400,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          'Size list',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        if (cubit.editable == false)
+                                          TextButton(
+                                            child: Text('Add list'),
+                                            onPressed: () {
+                                              setState(() {
+                                                addList = false;
+                                              });
+                                            },
+                                          )
+                                      ]),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                          child: TextFormField(
+                                        controller: sizeText,
+                                        decoration: InputDecoration(
+                                            filled: true,
+                                            fillColor: Colors.white),
+                                      )),
+                                      SizedBox (width: 10,),
+                                      ElevatedButton(
+                                        child: Text('Add'),
+                                        onPressed: () {},
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox (height: 10,),
+                                  if (sizeList.isNotEmpty)
+                                    SizedBox(
+                                      child: ListView.builder(
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: sizeList.length,
+                                        itemBuilder: (context, index) {
+                                          return Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Container(
+                                              height: 40,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(4),
+                                                color: Colors.amber,
+                                              ),
+                                              child: Center(
+                                                  child: Text(sizeList[index])),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                      height: 80,
+                                    ),
+                                ],
+                              ),
+                            ),
+                          ),
+
                           Row(
                             children: [
                               Expanded(child: cubit.taxStatusDropDown()),
@@ -376,26 +463,26 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           SizedBox(
                             height: 10,
                           ),
-                            Container(
-                              color: Colors.grey.shade300,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    CheckboxListTile(
-                                        contentPadding: EdgeInsets.zero,
-                                        title: Text('Charge Shipping ?'),
-                                        value: chargeShipping,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            chargeShipping = value;
-                                            if (value == false) {
-                                              shippingCharge.clear();
-                                            }
-                                          });
-                                        }),
-                                    if (chargeShipping == true)
-                                      Row(
+                          Container(
+                            color: Colors.grey.shade300,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  CheckboxListTile(
+                                      contentPadding: EdgeInsets.zero,
+                                      title: Text('Charge Shipping ?'),
+                                      value: chargeShipping,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          chargeShipping = value;
+                                          if (value == false) {
+                                            shippingCharge.clear();
+                                          }
+                                        });
+                                      }),
+                                  if (chargeShipping == true)
+                                    Row(
                                       children: [
                                         Text(
                                           'Shipping Charge : ',
@@ -412,13 +499,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                         ),
                                       ],
                                     ),
-                                  ],
-                                ),
+                                ],
                               ),
                             ),
+                          ),
                           Padding(
                             padding:
-                            const EdgeInsets.only(bottom: 10.0, top: 20.0),
+                                const EdgeInsets.only(bottom: 10.0, top: 20.0),
                             child: Row(children: [
                               Text(
                                 'SKU: ',
@@ -430,7 +517,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               Text(widget.product!.sku!),
                             ]),
                           ),
-
                         ],
                       ),
                     ),
