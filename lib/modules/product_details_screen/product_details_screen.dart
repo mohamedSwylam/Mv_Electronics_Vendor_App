@@ -300,16 +300,24 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                         itemBuilder: (context, index) {
                                           return Padding(
                                             padding: const EdgeInsets.all(8.0),
-                                            child: Container(
-                                              height: 40,
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(4),
-                                                color: Colors.amber,
+                                            child: InkWell(
+                                              onLongPress: () {
+                                                setState(() {
+                                                  cubit.sizeList
+                                                      .removeAt(index);
+                                                });
+                                              },
+                                              child: Container(
+                                                height: 40,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(4),
+                                                  color: Colors.amber,
+                                                ),
+                                                child: Center(
+                                                    child: Text(
+                                                        cubit.sizeList[index])),
                                               ),
-                                              child: Center(
-                                                  child: Text(
-                                                      cubit.sizeList[index])),
                                             ),
                                           );
                                         },
