@@ -24,6 +24,7 @@ import 'package:path/path.dart';
 
 class ProductDetailsCubit extends Cubit<ProductDetailsStates> {
   ProductDetailsCubit() : super(ProductDetailsInitialState());
+
   static ProductDetailsCubit get(context) => BlocProvider.of(context);
   FirebaseService service = FirebaseService();
   final formKey = GlobalKey<FormState>();
@@ -43,10 +44,10 @@ class ProductDetailsCubit extends Cubit<ProductDetailsStates> {
   String? taxAmount;
   bool? manageInventory;
   bool? chargeShipping;
-  bool addList=true;
+  bool addList = true;
   List sizeList = [];
 
-  getProductData(Product product){
+  getProductData(Product product) {
     productName.text = product.productName!;
     description.text = product.description!;
     otherDetails.text = product.otherDetails!;
@@ -68,23 +69,29 @@ class ProductDetailsCubit extends Cubit<ProductDetailsStates> {
     manageInventory = product.manageInventory;
     chargeShipping = product.chargeShipping;
   }
+
   void dropDownTaxStatusButtonChange(String? selectedStatus) {
     taxStatus = selectedStatus;
 
     emit(TaxStatusChangeSuccessState());
   }
+
   void dropDownTaxAmountButtonChange(String? selectedAmount) {
     taxAmount = selectedAmount;
     emit(TaxAmountChangeSuccessState());
   }
+
   Widget taxStatusDropDown() {
     return DropdownButtonFormField<String>(
         value: taxStatus,
         icon: const Icon(Icons.arrow_drop_down),
         elevation: 16,
         style: const TextStyle(color: Colors.deepPurple),
-        onChanged: (value)=>dropDownTaxStatusButtonChange(value),
-        hint: Text('Tax Status',style: TextStyle(fontSize: 16),),
+        onChanged: (value) => dropDownTaxStatusButtonChange(value),
+        hint: Text(
+          'Tax Status',
+          style: TextStyle(fontSize: 16),
+        ),
         items: ['Taxable', 'Not Taxable']
             .map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
@@ -92,21 +99,24 @@ class ProductDetailsCubit extends Cubit<ProductDetailsStates> {
             child: Text(value),
           );
         }).toList(),
-        validator: (value){
-          if(value!.isEmpty) {
+        validator: (value) {
+          if (value!.isEmpty) {
             return 'Select Tax Status';
           }
-        }
-    );
+        });
   }
-  Widget taxAmountDropDown (){
+
+  Widget taxAmountDropDown() {
     return DropdownButtonFormField<String>(
         value: taxAmount,
         icon: const Icon(Icons.arrow_drop_down),
         elevation: 16,
         style: const TextStyle(color: Colors.deepPurple),
-        onChanged: (value)=>dropDownTaxAmountButtonChange(value),
-        hint: Text('Tax Amount',style: TextStyle(fontSize: 16),),
+        onChanged: (value) => dropDownTaxAmountButtonChange(value),
+        hint: Text(
+          'Tax Amount',
+          style: TextStyle(fontSize: 16),
+        ),
         items: ['GST-10%', 'GST-12%']
             .map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
@@ -114,21 +124,31 @@ class ProductDetailsCubit extends Cubit<ProductDetailsStates> {
             child: Text(value),
           );
         }).toList(),
-        validator: (value){
-          if(value!.isEmpty) {
+        validator: (value) {
+          if (value!.isEmpty) {
             return 'Select Tax Amount';
           }
-        }
-    );
+        });
   }
-  bool editable =true;
-  changeToEdit(){
-    editable=false;
+
+  bool editable = true;
+
+  changeToEdit() {
+    editable = false;
     emit(ChangeToEditSuccessState());
   }
-  changeToSave(){
-    editable=true;
-    addList=false;
-    emit(ChangeToEditSuccessState());
+
+  changeToSave(productId) {
+    EasyLoading.show();
+    service.products.doc(productId).update({
+      'brand': brand.text,
+      'productName' : productName.text,
+      'description': description,
+    });
+    if (formKey.currentState!.validate()) {
+      editable = true;
+      addList = false;
+      emit(ChangeToEditSuccessState());
+    }
   }
 }

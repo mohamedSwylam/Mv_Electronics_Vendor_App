@@ -63,7 +63,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               ),
                               child: Text("Save"),
                               onPressed: () {
-                                cubit.changeToSave();
+                                cubit.changeToSave(widget.productId);
                               }),
                         ),
                 ],
