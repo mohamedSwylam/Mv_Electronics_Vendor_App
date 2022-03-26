@@ -27,50 +27,9 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
-  final formKey = GlobalKey<FormState>();
-  final productName = TextEditingController();
-  final brand = TextEditingController();
-  final salesPrice = TextEditingController();
-  final regularPrice = TextEditingController();
-  final description = TextEditingController();
-  final soh = TextEditingController();
-  final reOrderLevel = TextEditingController();
-  final shippingCharge = TextEditingController();
-  final otherDetails = TextEditingController();
-  final sizeText = TextEditingController();
-  DateTime? scheduleDate;
-  String? taxStatus;
-  String? taxAmount;
-  bool? manageInventory;
-  bool? chargeShipping;
-  bool? addList;
-  List sizeList = [];
-
   @override
   void initState() {
-    setState(() {
-      productName.text = widget.product!.productName!;
-      description.text = widget.product!.description!;
-      otherDetails.text = widget.product!.otherDetails!;
-      brand.text = widget.product!.brand!;
-      salesPrice.text = widget.product!.salesPrice!.toString();
-      regularPrice.text = widget.product!.regularPrice!.toString();
-      soh.text = widget.product!.soh!.toString();
-      shippingCharge.text = widget.product!.shippingCharge!.toString();
-      reOrderLevel.text = widget.product!.reorderLevel!.toString();
-      taxStatus = widget.product!.taxStatus!;
-      taxAmount = widget.product!.taxPercentage == 10 ? 'GST-10%' : 'GST-12%';
-      if (widget.product!.scheduleDate != null) {
-        scheduleDate = DateTime.fromMicrosecondsSinceEpoch(
-            widget.product!.scheduleDate!.microsecondsSinceEpoch);
-      }
-      if (widget.product!.size!.isNotEmpty) {
-        sizeList = widget.product!.size!;
-      }
-      manageInventory = widget.product!.manageInventory;
-      chargeShipping = widget.product!.chargeShipping;
-    });
-
+    ProductDetailsCubit.get(context).getProductData(widget.product!);
     super.initState();
   }
 
@@ -82,7 +41,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         builder: (context, state) {
           var cubit = ProductDetailsCubit.get(context);
           return Form(
-            key: formKey,
+            key: cubit.formKey,
             child: Scaffold(
               backgroundColor: Colors.white,
               appBar: AppBar(
@@ -142,7 +101,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             ),
                             Expanded(
                               child: CustomTextFormField(
-                                controller: brand,
+                                controller: cubit.brand,
                                 inputType: TextInputType.text,
                               ),
                             ),
@@ -151,18 +110,18 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             height: 10,
                           ),
                           CustomTextFormField(
-                            controller: productName,
+                            controller: cubit.productName,
                             inputType: TextInputType.text,
                           ),
                           SizedBox(
                             height: 10,
                           ),
                           CustomTextFormField(
-                            controller: description,
+                            controller: cubit.description,
                             inputType: TextInputType.text,
                           ),
                           CustomTextFormField(
-                            controller: otherDetails,
+                            controller: cubit.otherDetails,
                             inputType: TextInputType.text,
                           ),
                           Padding(
@@ -196,7 +155,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                             ),
                                             Expanded(
                                               child: CustomTextFormField(
-                                                controller: salesPrice,
+                                                controller: cubit.salesPrice,
                                                 inputType: TextInputType.number,
                                               ),
                                             ),
@@ -216,7 +175,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                           ),
                                           Expanded(
                                             child: CustomTextFormField(
-                                              controller: regularPrice,
+                                              controller: cubit.regularPrice,
                                               inputType: TextInputType.number,
                                             ),
                                           ),
@@ -227,7 +186,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   SizedBox(
                                     height: 10,
                                   ),
-                                  if (scheduleDate != null)
+                                  if (cubit.scheduleDate != null)
                                     Column(
                                       children: [
                                         Row(
@@ -236,7 +195,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                             children: [
                                               const Text('Sales price until :'),
                                               Text(AddProductCubit.get(context)
-                                                  .formattedDate(scheduleDate)),
+                                                  .formattedDate(
+                                                      cubit.scheduleDate)),
                                             ]),
                                         SizedBox(
                                           height: 10,
@@ -248,12 +208,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                               showDatePicker(
                                                       context: context,
                                                       initialDate:
-                                                          scheduleDate!,
+                                                          cubit.scheduleDate!,
                                                       firstDate: DateTime.now(),
                                                       lastDate: DateTime(5000))
                                                   .then((value) {
                                                 setState(() {
-                                                  scheduleDate = value;
+                                                  cubit.scheduleDate = value;
                                                 });
                                               });
                                             },
@@ -288,33 +248,55 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                             child: Text('Add list'),
                                             onPressed: () {
                                               setState(() {
-                                                addList = false;
+                                                cubit.addList = true;
                                               });
                                             },
                                           )
                                       ]),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                          child: TextFormField(
-                                        controller: sizeText,
-                                        decoration: InputDecoration(
-                                            filled: true,
-                                            fillColor: Colors.white),
-                                      )),
-                                      SizedBox (width: 10,),
-                                      ElevatedButton(
-                                        child: Text('Add'),
-                                        onPressed: () {},
-                                      )
-                                    ],
+                                  if (cubit.addList)
+                                    Form(
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                              child: TextFormField(
+                                            validator: (value) {
+                                              if (value!.isEmpty) {
+                                                return 'Enter a value';
+                                              }
+                                            },
+                                            controller: cubit.sizeText,
+                                            decoration: InputDecoration(
+                                                filled: true,
+                                                fillColor: Colors.white),
+                                          )),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          ElevatedButton(
+                                            child: Text('Add'),
+                                            onPressed: () {
+                                              if (cubit.formKey2.currentState!
+                                                  .validate()) {
+                                                cubit.sizeList
+                                                    .add(cubit.sizeText.text);
+                                                setState(() {
+                                                  cubit.sizeText.clear();
+                                                });
+                                              }
+                                            },
+                                          )
+                                        ],
+                                      ),
+                                      key: cubit.formKey2,
+                                    ),
+                                  SizedBox(
+                                    height: 10,
                                   ),
-                                  SizedBox (height: 10,),
-                                  if (sizeList.isNotEmpty)
+                                  if (cubit.sizeList.isNotEmpty)
                                     SizedBox(
                                       child: ListView.builder(
                                         scrollDirection: Axis.horizontal,
-                                        itemCount: sizeList.length,
+                                        itemCount: cubit.sizeList.length,
                                         itemBuilder: (context, index) {
                                           return Padding(
                                             padding: const EdgeInsets.all(8.0),
@@ -326,7 +308,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                                 color: Colors.amber,
                                               ),
                                               child: Center(
-                                                  child: Text(sizeList[index])),
+                                                  child: Text(
+                                                      cubit.sizeList[index])),
                                             ),
                                           );
                                         },
@@ -404,17 +387,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     CheckboxListTile(
                                         contentPadding: EdgeInsets.zero,
                                         title: Text('Manage inventory ?'),
-                                        value: manageInventory,
+                                        value: cubit.manageInventory,
                                         onChanged: (value) {
                                           setState(() {
-                                            manageInventory = value;
+                                            cubit.manageInventory = value;
                                             if (value == false) {
-                                              soh.clear();
-                                              reOrderLevel.clear();
+                                              cubit.soh.clear();
+                                              cubit.reOrderLevel.clear();
                                             }
                                           });
                                         }),
-                                    if (manageInventory == true)
+                                    if (cubit.manageInventory == true)
                                       Row(children: [
                                         Expanded(
                                           child: Row(
@@ -426,7 +409,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                               ),
                                               Expanded(
                                                 child: CustomTextFormField(
-                                                  controller: soh,
+                                                  controller: cubit.soh,
                                                   inputType:
                                                       TextInputType.number,
                                                 ),
@@ -447,7 +430,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                               ),
                                               Expanded(
                                                 child: CustomTextFormField(
-                                                  controller: reOrderLevel,
+                                                  controller:
+                                                      cubit.reOrderLevel,
                                                   inputType:
                                                       TextInputType.number,
                                                 ),
@@ -472,16 +456,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   CheckboxListTile(
                                       contentPadding: EdgeInsets.zero,
                                       title: Text('Charge Shipping ?'),
-                                      value: chargeShipping,
+                                      value: cubit.chargeShipping,
                                       onChanged: (value) {
                                         setState(() {
-                                          chargeShipping = value;
+                                          cubit.chargeShipping = value;
                                           if (value == false) {
-                                            shippingCharge.clear();
+                                            cubit.shippingCharge.clear();
                                           }
                                         });
                                       }),
-                                  if (chargeShipping == true)
+                                  if (cubit.chargeShipping == true)
                                     Row(
                                       children: [
                                         Text(
@@ -494,7 +478,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                         Expanded(
                                           child: CustomTextFormField(
                                             inputType: TextInputType.number,
-                                            controller: shippingCharge,
+                                            controller: cubit.shippingCharge,
                                           ),
                                         ),
                                       ],

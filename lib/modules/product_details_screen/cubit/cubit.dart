@@ -10,6 +10,7 @@ import 'package:mv_vendor_app/modules/add_products_screen/cubit/states.dart';
 import 'package:intl/intl.dart';
 import 'package:mv_vendor_app/modules/product_details_screen/cubit/states.dart';
 import '../../../layout/cubit/cubit.dart';
+import '../../../models/product_model.dart';
 import '../../../services/firebase_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
@@ -25,8 +26,48 @@ class ProductDetailsCubit extends Cubit<ProductDetailsStates> {
   ProductDetailsCubit() : super(ProductDetailsInitialState());
   static ProductDetailsCubit get(context) => BlocProvider.of(context);
   FirebaseService service = FirebaseService();
+  final formKey = GlobalKey<FormState>();
+  final formKey2 = GlobalKey<FormState>();
+  final productName = TextEditingController();
+  final brand = TextEditingController();
+  final salesPrice = TextEditingController();
+  final regularPrice = TextEditingController();
+  final description = TextEditingController();
+  final soh = TextEditingController();
+  final reOrderLevel = TextEditingController();
+  final shippingCharge = TextEditingController();
+  final otherDetails = TextEditingController();
+  final sizeText = TextEditingController();
+  DateTime? scheduleDate;
   String? taxStatus;
   String? taxAmount;
+  bool? manageInventory;
+  bool? chargeShipping;
+  bool addList=true;
+  List sizeList = [];
+
+  getProductData(Product product){
+    productName.text = product.productName!;
+    description.text = product.description!;
+    otherDetails.text = product.otherDetails!;
+    brand.text = product.brand!;
+    salesPrice.text = product.salesPrice!.toString();
+    regularPrice.text = product.regularPrice!.toString();
+    soh.text = product.soh!.toString();
+    shippingCharge.text = product.shippingCharge!.toString();
+    reOrderLevel.text = product.reorderLevel!.toString();
+    taxStatus = product.taxStatus!;
+    taxAmount = product.taxPercentage == 10 ? 'GST-10%' : 'GST-12%';
+    if (product.scheduleDate != null) {
+      scheduleDate = DateTime.fromMicrosecondsSinceEpoch(
+          product.scheduleDate!.microsecondsSinceEpoch);
+    }
+    if (product.size!.isNotEmpty) {
+      sizeList = product.size!;
+    }
+    manageInventory = product.manageInventory;
+    chargeShipping = product.chargeShipping;
+  }
   void dropDownTaxStatusButtonChange(String? selectedStatus) {
     taxStatus = selectedStatus;
 
@@ -87,6 +128,7 @@ class ProductDetailsCubit extends Cubit<ProductDetailsStates> {
   }
   changeToSave(){
     editable=true;
+    addList=false;
     emit(ChangeToEditSuccessState());
   }
 }
