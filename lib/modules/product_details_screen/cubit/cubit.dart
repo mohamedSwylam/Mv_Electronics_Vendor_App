@@ -142,8 +142,14 @@ class ProductDetailsCubit extends Cubit<ProductDetailsStates> {
     EasyLoading.show();
     service.products.doc(productId).update({
       'brand': brand.text,
-      'productName' : productName.text,
-      'description': description,
+      'productName': productName.text,
+      'description': description.text,
+      'otherDetails': otherDetails.text,
+      'salesPrice': salesPrice.text,
+      'regularPrice': regularPrice.text,
+      'size': sizeList,
+      'taxStatus': taxStatus,
+      'taxValue': taxAmount,
     });
     if (formKey.currentState!.validate()) {
       editable = true;
