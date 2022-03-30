@@ -149,7 +149,12 @@ class ProductDetailsCubit extends Cubit<ProductDetailsStates> {
       'regularPrice': regularPrice.text,
       'size': sizeList,
       'taxStatus': taxStatus,
-      'taxValue': taxAmount,
+      'taxPercentage': taxAmount=='GSt-10%'? 10 : 12 ,
+      'manageInventory':manageInventory,
+      'soh': soh.text,
+      'reorderLevel': reOrderLevel.text,
+      'chargeShipping':chargeShipping,
+      'shippingCharge': shippingCharge.text,
     });
     if (formKey.currentState!.validate()) {
       editable = true;
