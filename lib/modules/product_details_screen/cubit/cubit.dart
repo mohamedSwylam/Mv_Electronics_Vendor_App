@@ -145,21 +145,25 @@ class ProductDetailsCubit extends Cubit<ProductDetailsStates> {
       'productName': productName.text,
       'description': description.text,
       'otherDetails': otherDetails.text,
-      'salesPrice': salesPrice.text,
-      'regularPrice': regularPrice.text,
+      'salesPrice': int.parse(salesPrice.text),
+      'regularPrice': int.parse(regularPrice.text),
       'size': sizeList,
       'taxStatus': taxStatus,
-      'taxPercentage': taxAmount=='GSt-10%'? 10 : 12 ,
+      'taxPercentage': taxAmount == 'GSt-10%'? 10 : 12 ,
       'manageInventory':manageInventory,
-      'soh': soh.text,
-      'reorderLevel': reOrderLevel.text,
+      'soh': int.parse(soh.text),
+      'reorderLevel': int.parse(reOrderLevel.text),
       'chargeShipping':chargeShipping,
-      'shippingCharge': shippingCharge.text,
-    });
-    if (formKey.currentState!.validate()) {
+      'shippingCharge': int.parse(shippingCharge.text),
+    }).then((value) {
       editable = true;
       addList = false;
+      EasyLoading.dismiss();
       emit(ChangeToEditSuccessState());
-    }
+    });
+
+
+
+
   }
 }

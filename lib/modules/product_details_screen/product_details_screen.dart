@@ -103,6 +103,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               child: CustomTextFormField(
                                 controller: cubit.brand,
                                 inputType: TextInputType.text,
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Enter brand';
+                                  }
+                                },
                               ),
                             ),
                           ]),
@@ -118,11 +123,21 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           ),
                           CustomTextFormField(
                             controller: cubit.description,
-                            inputType: TextInputType.text,
+                            inputType: TextInputType.multiline,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Enter description';
+                              }
+                            },
                           ),
                           CustomTextFormField(
                             controller: cubit.otherDetails,
                             inputType: TextInputType.text,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Enter otherDetails';
+                              }
+                            },
                           ),
                           Padding(
                               padding:
@@ -157,6 +172,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                               child: CustomTextFormField(
                                                 controller: cubit.salesPrice,
                                                 inputType: TextInputType.number,
+                                                validator: (value) {
+                                                  if (value!.isEmpty) {
+                                                    return 'Enter Sales price';
+                                                  }
+                                                  if (int.parse(value) >
+                                                      int.parse(cubit
+                                                          .regularPrice.text)) {
+                                                    return 'Sales price < regular price';
+                                                  }
+                                                },
                                               ),
                                             ),
                                           ],
@@ -175,9 +200,18 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                           ),
                                           Expanded(
                                             child: CustomTextFormField(
-                                              controller: cubit.regularPrice,
-                                              inputType: TextInputType.number,
-                                            ),
+                                                controller: cubit.regularPrice,
+                                                inputType: TextInputType.number,
+                                                validator: (value) {
+                                                  if (value!.isEmpty) {
+                                                    return 'Enter regular price';
+                                                  }
+                                                  if (int.parse(value) <
+                                                      int.parse(cubit
+                                                          .salesPrice.text)) {
+                                                    return 'Enter less than sales price';
+                                                  }
+                                                }),
                                           ),
                                         ],
                                       ),
@@ -442,6 +476,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                                       cubit.reOrderLevel,
                                                   inputType:
                                                       TextInputType.number,
+                                                  validator: (value) {
+                                                    if (value!.isEmpty) {
+                                                      return 'Enter reOrderLevel';
+                                                    }
+                                                  },
                                                 ),
                                               ),
                                             ],
@@ -486,6 +525,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                         Expanded(
                                           child: CustomTextFormField(
                                             inputType: TextInputType.number,
+                                            validator: (value) {
+                                              if (value!.isEmpty) {
+                                                return 'Enter shippingCharge';
+                                              }
+                                            },
                                             controller: cubit.shippingCharge,
                                           ),
                                         ),
