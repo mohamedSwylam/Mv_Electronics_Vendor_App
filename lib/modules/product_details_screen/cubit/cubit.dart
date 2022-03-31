@@ -138,7 +138,7 @@ class ProductDetailsCubit extends Cubit<ProductDetailsStates> {
     emit(ChangeToEditSuccessState());
   }
 
-  changeToSave(productId) {
+  updateProduct(productId) {
     EasyLoading.show();
     service.products.doc(productId).update({
       'brand': brand.text,
@@ -159,7 +159,7 @@ class ProductDetailsCubit extends Cubit<ProductDetailsStates> {
       editable = true;
       addList = false;
       EasyLoading.dismiss();
-      emit(ChangeToEditSuccessState());
+      emit(UpdateProductSuccessState());
     });
 
 

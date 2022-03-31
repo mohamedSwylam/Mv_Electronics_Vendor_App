@@ -63,7 +63,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               ),
                               child: Text("Save"),
                               onPressed: () {
-                                cubit.changeToSave(widget.productId);
+                                cubit.updateProduct(widget.productId);
                               }),
                         ),
                 ],
@@ -273,10 +273,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         Text(
-                                          'Size list',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold),
-                                        ),
+                                            'Size list : ${cubit.sizeList.isEmpty ? 0 : ''}',
+                                            style: const TextStyle(fontWeight: FontWeight.bold,
+                                        ),),
                                         if (cubit.editable == false)
                                           TextButton(
                                             child: Text('Add list'),
